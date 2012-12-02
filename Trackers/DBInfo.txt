@@ -1,0 +1,293 @@
+==============================================================================
+DB INFO
+==============================================================================
+
+Database.java: This is the core database class. This should be used to create 
+table, drop table, get instance of inserter, deleter, updater and selector.
+
+SQLLiteDBImpl.java: This class implements the functions defined in Database 
+class and so, shouldn't be used directly. (I just noticed that i misspelled 
+SQLite and so, have to change the name of the file. Since this is an 
+implementation file, it shouldn't affect you).
+
+DMLQuery.java: This is a abstract base class for DML Queries - Selector, 
+Inserter, Deleter and Updater.
+
+Selector.java, Inserter.java, Updater.java, Deleter.java - These classes 
+derive from DMLQuery. You shouldn't instantiate these classes directly, but 
+use the Database class to get an instance. 
+Example: Selector sel = db.selector(tableName); 
+Then, to execute you simply call: sel.execute. You can also add a where clause
+by calling sel.where(string). If you don't call where, it will execute 
+"select * from tableName. Also, you would need to call addColumns() if you 
+want to query select columns.
+
+ResultSet.java: This is basically a very thin wrapper around Cursor. The 
+reason I chose to add this class is that other database don't always return a
+cursor when select is executed. This wrapper just prevents the code from 
+being tied to SQLite.
+
+==============================================================================
+EXAMPLE USAGE 1 : MAIN ACTIVITY
+==============================================================================
+
+package com.csci5448.tritrackers;
+
+import com.csci5448.tritrackers.CancelDialog.CancleDialogListener;
+
+import android.os.Bundle;
+
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import static android.provider.BaseColumns._ID;
+
+public class MainActivity extends Activity implements CancleDialogListener {
+
+	private ListView profiles;
+	private int itemSelected = -1;
+	private String tableName = "workout";
+	private Database db;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		db = new Database(this, "profiles.db");
+		boolean b = db.tableExists(tableName);
+		if(!b) {
+			db.createTable(tableName, _ID  + " INTEGER PRIMARY KEY AUTOINCREMENT, exercise TEXT NOT NULL, reps INTEGER, sets INTEGER, date TEXT NOT NULL");
+		}
+		profiles = (ListView) findViewById(R.id.user_list);
+		profiles.setAdapter(getCurrentUsers());
+        profiles.setOnItemClickListener(new OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> list, View list_item, int position, long id) {
+            		MainActivity.this.itemSelected = position;
+            		MainActivity.this.invalidateOptionsMenu();
+            }
+        });
+
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_main, menu);
+		return true;
+	}
+
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		MenuItem delete = menu.findItem(R.id.menu_delete_profile);
+		MenuItem edit = menu.findItem(R.id.menu_activity_test);
+		if (itemSelected != -1) {
+			delete.setEnabled(true);
+			edit.setEnabled(true);
+		} else {
+			delete.setEnabled(false);
+			edit.setEnabled(false);
+		}
+		return true;
+	}
+
+	public boolean onOptionsItemSelected (MenuItem item) {
+		Intent intent = new Intent(this, EditWorkout.class);
+		if (item.getItemId() == R.id.menu_new_profile) {
+			startActivity(intent);
+		}
+		if (item.getItemId() == R.id.menu_activity_test) {
+			TextView text = (TextView) profiles.getChildAt(itemSelected);
+			intent.putExtra("exercise", text.getText().toString());
+			startActivity(intent);
+			itemSelected = -1;
+			invalidateOptionsMenu();
+		}
+		if (item.getItemId() == R.id.menu_delete_profile) {
+			showNoticeDialog();
+		}
+		return true;
+	}
+	
+    public void onResume() {
+        super.onResume();
+		profiles.setAdapter(getCurrentUsers());
+    }
+
+	public ArrayAdapter<String> getCurrentUsers() {
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice);
+
+		String[] str = {"exercise"};
+		Selector select = db.selector(tableName);
+		select.addColumns(str);
+		//select.orderBy("last");
+		int count = select.execute();
+		ResultSet cursor = select.getResultSet();
+		
+		while (cursor.moveToNext()) {
+			adapter.add(cursor.getString(0));
+			System.out.println("Got exercise: " + cursor.getString(0));
+		}
+		cursor.close();
+		
+		if (adapter.getCount() == 0) {
+			adapter.add("No exercises.");			
+			profiles.setChoiceMode(ListView.CHOICE_MODE_NONE);
+		} else {
+			profiles.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		}
+
+		return adapter;
+	}
+
+	public void remove_name(String name) {
+        Deleter del = db.deleter(tableName);
+        del.where("exercise = ?",  new String[] { name });
+        del.execute();
+
+		profiles.setAdapter(getCurrentUsers());
+        itemSelected = -1;
+        invalidateOptionsMenu();
+	}
+
+	public void onDialogNegativeClick(DialogFragment dialog) {
+		System.out.print("Negative Clicked");
+	}	
+	
+	public void onDialogPositiveClick(DialogFragment dialog) {
+		TextView text = (TextView) profiles.getChildAt(itemSelected);
+		remove_name(text.getText().toString());		
+	}
+	
+    public void showNoticeDialog() {
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialog = new CancelDialog();
+        dialog.show(getFragmentManager(), "CancelDialog");
+    }	
+
+}
+
+==============================================================================
+EXAMPLE USAGE 2 : EDIT WORKOUT
+==============================================================================
+
+package com.csci5448.tritrackers;
+
+import android.app.Activity;
+import android.content.ContentValues;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.EditText;
+
+public class EditWorkout extends Activity {
+
+	private String exercise;
+	private boolean saveData = true;
+	private Database db;
+	private String tableName = "workout";
+
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_test);
+		exercise = getIntent().getStringExtra("exercise");
+		db = new Database(this, "profiles.db");
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_test, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected (MenuItem item) {
+		if (item.getItemId() == R.id.menu_ok) {
+			saveData = true;
+		} else if (item.getItemId() == R.id.menu_cancel) {
+			saveData = false;
+		}
+		finish();
+		return true;
+	}
+
+	public void onResume() {
+		super.onResume();
+		saveData = true;
+
+		if (exercise != null) {
+
+			EditText exer = (EditText) findViewById(R.id.exercise);
+			EditText reps  = (EditText) findViewById(R.id.reps);
+			EditText sets      = (EditText) findViewById(R.id.sets);
+			EditText dt      = (EditText) findViewById(R.id.date);
+			
+			Selector sel = db.selector(tableName);
+			sel.addColumns(new String[] { "exercise", "reps", "sets", "date" });
+			sel.where("exercise == ?", new String[] {exercise});
+			sel.execute();
+			ResultSet cursor = sel.getResultSet();
+			while (cursor.moveToNext()) {
+				exer.setText(cursor.getString(0));
+				reps.setText(cursor.getString(1));
+				sets.setText(cursor.getString(2));
+				sets.setText(cursor.getString(3));				
+			}
+			cursor.close();
+		}
+
+	}
+	
+	public void onPause() {
+		super.onPause();
+		if (saveData) {
+
+			EditText exercise_e = (EditText) findViewById(R.id.exercise);
+			EditText reps_e  = (EditText) findViewById(R.id.reps);
+			EditText sets_e = (EditText) findViewById(R.id.sets);
+			EditText date_e = (EditText) findViewById(R.id.date);			
+
+			String exer = exercise_e.getText().toString();	
+			String reps = reps_e.getText().toString();
+			String sets = sets_e.getText().toString();
+			String date = date_e.getText().toString();
+
+			if (exer != null) {
+				Deleter del = db.deleter(tableName);
+				del.where("exercise = ?", new String[] { exercise });
+			}
+
+			ContentValues values = new ContentValues();
+			values.put("exercise", exer);
+			values.put("reps", reps);
+			values.put("sets", sets);
+			values.put("date", date);
+			Inserter ins = db.inserter(tableName);
+			ins.columnNameValues(values);
+			ins.execute();
+
+		}
+	}
+
+	public void insert(ContentValues values)
+	{
+		Inserter ins = db.inserter(tableName);
+		ins.columnNameValues(values);
+		ins.execute();
+	}
+	
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		db.close();
+	}
+
+}

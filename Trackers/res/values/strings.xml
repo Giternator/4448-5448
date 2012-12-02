@@ -1,0 +1,25 @@
+<resources>
+
+    <string name="app_name">Trackers</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Trackers</string>
+    <string name="shopping_list">Shopping List</string>
+    <string name="health_metrics">Health Metrics</string>
+    <string name="title_activity_slmain">Shopping List</string>
+    <string name="menu_new">New</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_cancel">Cancel</string>
+    <string name="menu_ok">OK</string>
+    <string name="title_activity_sledit_item">Edit Item</string>
+    <string name="sl_name_label">Name:</string>
+    <string name="sl_name_hint">The name of the item</string>
+    <string name="sl_price_label">Price:</string>
+    <string name="sl_price_hint">How much it costs</string>
+    <string name="sl_quantity_label">Quantity:</string>
+    <string name="sl_quantity_hint">The number of items</string>
+    <string name="num_one">1</string>
+    <string name="one_dollar">$1.00</string>
+
+</resources>

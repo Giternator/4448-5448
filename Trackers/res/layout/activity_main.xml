@@ -1,0 +1,19 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <Button android:id="@+id/shopping_list_button"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:text="@string/shopping_list"
+        android:textSize="32sp" />
+    
+    <Button android:id="@+id/health_metrics_button"
+        android:layout_below="@id/shopping_list_button"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:text="@string/health_metrics"
+        android:textSize="32sp" />
+
+</RelativeLayout>

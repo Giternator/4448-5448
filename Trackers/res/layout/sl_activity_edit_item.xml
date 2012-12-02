@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent">
+
+	<TextView android:id="@+id/name_label"
+	    android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:textSize="24sp"
+		android:text="@string/sl_name_label" />
+
+	<EditText android:id="@+id/sl_name" 
+	    android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/name_label" 
+		android:hint="@string/sl_name_hint"
+		android:inputType="text" 
+		android:textSize="24sp" />
+
+	<TextView android:id="@+id/price_label"
+	    android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_below="@id/sl_name"
+		android:textSize="24sp"
+		android:text="@string/sl_price_label" />
+
+	<EditText android:id="@+id/sl_price" 
+	    android:layout_width="match_parent"
+		android:layout_height="wrap_content" 
+		android:layout_below="@id/price_label"
+		android:hint="@string/sl_price_hint"
+		android:inputType="numberDecimal" 
+		android:textSize="24sp" />
+
+	<TextView android:id="@+id/quantity_label"
+	    android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_below="@id/sl_price"
+		android:textSize="24sp"
+		android:text="@string/sl_quantity_label" />
+
+	<EditText android:id="@+id/sl_quantity"
+	    android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/quantity_label" 
+		android:hint="@string/sl_quantity_hint"
+		android:inputType="number" 
+		android:textSize="24sp" />
+
+	<TableRow
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true" >
+	    
+		<Button android:id="@+id/cancel_button" 
+		    android:layout_height="wrap_content"
+			android:layout_weight="1" 
+			android:text="@string/menu_cancel"
+			android:textSize="32sp" 
+			android:padding="24sp" />
+	
+		<Button android:id="@+id/ok_button" 
+		    android:layout_height="wrap_content"
+			android:layout_weight="1" 
+			android:padding="24sp" 
+			android:text="@string/menu_ok"
+			android:textSize="32sp" />
+	</TableRow>
+</RelativeLayout>
