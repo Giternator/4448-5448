@@ -3,17 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <Button android:id="@+id/shopping_list_button"
+    <Button
+        android:id="@+id/shopping_list_button"
         android:layout_width="match_parent"
         android:layout_height="100sp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:text="@string/shopping_list"
         android:textSize="32sp" />
-    
-    <Button android:id="@+id/health_metrics_button"
-        android:layout_below="@id/shopping_list_button"
+
+    <Button
+        android:id="@+id/health_metrics_button"
         android:layout_width="match_parent"
         android:layout_height="100sp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/shopping_list_button"
+        android:layout_marginTop="22dp"
         android:text="@string/health_metrics"
+        android:textSize="32sp" />
+
+    <Button
+        android:id="@+id/workout_button"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/health_metrics_button"
+        android:layout_marginTop="22dp"
+        android:text="@string/workout"
         android:textSize="32sp" />
 
 </RelativeLayout>

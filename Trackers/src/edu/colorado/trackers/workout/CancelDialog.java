@@ -1,5 +1,6 @@
 package edu.colorado.trackers.workout;
 
+import edu.colorado.trackers.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;

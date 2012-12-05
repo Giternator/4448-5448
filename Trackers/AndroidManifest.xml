@@ -34,6 +34,27 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.colorado.trackers.MainActivity" />
         </activity>
+        <activity
+            android:name="edu.colorado.trackers.workout.MainActivity"
+            android:label="@string/title_activity_main" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.colorado.trackers.MainActivity" />
+        </activity>
+        <activity
+            android:name="edu.colorado.trackers.workout.EditWorkout"
+            android:label="@string/title_activity_workout_info" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.colorado.trackers.workout.MainActivity" />
+        </activity>     
+        <activity
+            android:name="edu.colorado.trackers.workout.SendEmail"
+            android:label="@string/title_activity_sendemail" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.colorado.trackers.workout.MainActivity" />
+        </activity>               
     </application>
 
 </manifest>

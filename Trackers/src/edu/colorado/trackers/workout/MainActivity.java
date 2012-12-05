@@ -1,6 +1,18 @@
 package edu.colorado.trackers.workout;
 
 
+import java.util.ArrayList;
+
+import edu.colorado.trackers.R;
+import edu.colorado.trackers.workout.CancelDialog;
+import edu.colorado.trackers.db.Database;
+import edu.colorado.trackers.db.Deleter;
+import edu.colorado.trackers.workout.EditWorkout;
+import edu.colorado.trackers.workout.MainActivity;
+import edu.colorado.trackers.db.ResultSet;
+import edu.colorado.trackers.db.Selector;
+import edu.colorado.trackers.workout.SendEmail;
+
 import edu.colorado.trackers.workout.CancelDialog.CancleDialogListener;
 
 import android.os.Bundle;
@@ -18,7 +30,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import static android.provider.BaseColumns._ID;
-
 public class MainActivity extends Activity implements CancleDialogListener {
 
 	private ListView profiles;
@@ -29,14 +40,17 @@ public class MainActivity extends Activity implements CancleDialogListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.w_activity_main);
 		db = new Database(this, "profiles.db");
 		boolean b = db.tableExists(tableName);
+		System.out.print("table exist = " + b);
 		if(!b) {
 			db.createTable(tableName, _ID  + " INTEGER PRIMARY KEY AUTOINCREMENT, exercise TEXT NOT NULL, reps INTEGER, sets INTEGER, date TEXT NOT NULL");
 		}
-		profiles = (ListView) findViewById(R.id.user_list);
-		profiles.setAdapter(getCurrentUsers());
+		profiles = (ListView) findViewById(R.id.exercise_list);
+		ArrayList<String> lst = new ArrayList<String>();
+		lst.add("none");
+		profiles.setAdapter(getWorkouts());
         profiles.setOnItemClickListener(new OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> list, View list_item, int position, long id) {
@@ -48,7 +62,7 @@ public class MainActivity extends Activity implements CancleDialogListener {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main, menu);
+		getMenuInflater().inflate(R.menu.w_activity_main, menu);
 		return true;
 	}
 
@@ -56,7 +70,7 @@ public class MainActivity extends Activity implements CancleDialogListener {
 		super.onPrepareOptionsMenu(menu);
 		MenuItem delete = menu.findItem(R.id.menu_delete_profile);
 		MenuItem sendmail = menu.findItem(R.id.menu_send_mail);		
-		MenuItem edit = menu.findItem(R.id.menu_activity_test);
+		MenuItem edit = menu.findItem(R.id.menu_activity_workout_info);
 		if (itemSelected != -1) {
 			delete.setEnabled(true);
 			edit.setEnabled(true);
@@ -74,7 +88,7 @@ public class MainActivity extends Activity implements CancleDialogListener {
 		if (item.getItemId() == R.id.menu_new_profile) {
 			startActivity(intent);
 		}
-		if (item.getItemId() == R.id.menu_activity_test) {
+		if (item.getItemId() == R.id.menu_activity_workout_info) {
 			TextView text = (TextView) profiles.getChildAt(itemSelected);
 			intent.putExtra("exercise", text.getText().toString());
 			startActivity(intent);
@@ -94,10 +108,10 @@ public class MainActivity extends Activity implements CancleDialogListener {
 	
     public void onResume() {
         super.onResume();
-		profiles.setAdapter(getCurrentUsers());
+		profiles.setAdapter(getWorkouts());
     }
 
-	public ArrayAdapter<String> getCurrentUsers() {
+	public ArrayAdapter<String> getWorkouts() {
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice);
 
@@ -116,12 +130,13 @@ public class MainActivity extends Activity implements CancleDialogListener {
 		
 			if (adapter.getCount() == 0) {
 				adapter.add("No exercises.");			
-				profiles.setChoiceMode(ListView.CHOICE_MODE_NONE);
-			} else {
+			profiles.setChoiceMode(ListView.CHOICE_MODE_NONE);
+			} 
+			else {
 				profiles.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 			}
 		}
-		else {
+	    else {
 			adapter.add("No exercises.");			
 			profiles.setChoiceMode(ListView.CHOICE_MODE_NONE);
 		}
@@ -134,7 +149,7 @@ public class MainActivity extends Activity implements CancleDialogListener {
         del.where("exercise = ?",  new String[] { name });
         del.execute();
 
-		profiles.setAdapter(getCurrentUsers());
+		profiles.setAdapter(getWorkouts());
         itemSelected = -1;
         invalidateOptionsMenu();
 	}

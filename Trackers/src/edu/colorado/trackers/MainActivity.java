@@ -10,6 +10,7 @@ import android.widget.Button;
 public class MainActivity extends Activity {
 	
 	private Button shoppingListButton;
+	private Button workoutButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,15 @@ public class MainActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+        
+        workoutButton = (Button) findViewById(R.id.workout_button);
+        workoutButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				System.out.println("Button pressed: workout");
+				Intent intent = new Intent(MainActivity.this, edu.colorado.trackers.workout.MainActivity.class);
+				startActivity(intent);
+			}
+		});       
     }
 
     @Override
