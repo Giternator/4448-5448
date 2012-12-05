@@ -1,7 +1,5 @@
 package edu.colorado.trackers.db;
 
-import java.io.File;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -33,17 +31,15 @@ public class SQLiteDBImpl {
 	}
 
 	protected void openReadMode() {
-		if (!isRead) {	
-			File dbFile= context.getDatabasePath(dbName);	
-			dbReadable = SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY | SQLiteDatabase.CREATE_IF_NECESSARY);
+		if (!isRead) {
+			dbReadable = context.openOrCreateDatabase(dbName, SQLiteDatabase.OPEN_READONLY, null);
 			isRead = true;
 		}
 	}
 	
 	protected void openWriteMode() {
-		if (!isWritten) {			
-			File dbFile= context.getDatabasePath(dbName);
-			dbWritable = SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);			
+		if (!isWritten) {
+			dbWritable = context.openOrCreateDatabase(dbName, SQLiteDatabase.OPEN_READWRITE, null);			
 			isWritten = true;
 		}
 	}

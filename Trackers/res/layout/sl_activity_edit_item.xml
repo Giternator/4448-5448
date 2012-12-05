@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/edit_item_layout"
 	android:layout_width="fill_parent" 
 	android:layout_height="fill_parent">
 
@@ -50,7 +51,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginLeft="10sp"
-	        android:background="@color/red"
+	        android:background="@color/firebrick"
 	        android:textSize="42sp"
 	        android:text="@string/minus_sign" />
 	    
@@ -58,13 +59,13 @@
 		    android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:padding="24sp"
-			android:textSize="42sp"
+			android:textSize="32sp"
 			android:text="@string/nine_nine" />
 	    
 	    <Button android:id="@+id/plus_button"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:background="@color/green"
+	        android:background="@color/lime"
 	        android:textSize="42sp"
 	        android:text="@string/plus_sign" />	  
 	          
@@ -78,9 +79,9 @@
 		<Button android:id="@+id/cancel_button" 
 		    android:layout_height="wrap_content"
 			android:layout_weight="1" 
+			android:padding="24sp" 
 			android:text="@string/menu_cancel"
-			android:textSize="32sp" 
-			android:padding="24sp" />
+			android:textSize="32sp" />
 	
 		<Button android:id="@+id/ok_button" 
 		    android:layout_height="wrap_content"
@@ -89,4 +90,5 @@
 			android:text="@string/menu_ok"
 			android:textSize="32sp" />
 	</TableRow>
+	
 </RelativeLayout>

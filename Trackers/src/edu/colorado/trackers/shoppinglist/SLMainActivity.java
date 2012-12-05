@@ -2,32 +2,40 @@ package edu.colorado.trackers.shoppinglist;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 import edu.colorado.trackers.R;
+import edu.colorado.trackers.db.Database;
+import edu.colorado.trackers.db.Deleter;
+import edu.colorado.trackers.db.ResultSet;
+import edu.colorado.trackers.db.Selector;
 
 public class SLMainActivity extends Activity {
 	
 	private ListView listItems;
 	private int selectedItem = -1;
-	private ShoppingListDB shoppingListDB = new ShoppingListDB(this);
+	private Database db;
+	private String tableName = "shopping_list_items";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sl_activity_main);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        
+        db = new Database(this, "shopping_list.db");
+        if (!db.tableExists(tableName)) {
+        	createDBTable();
+        }
         
         listItems = (ListView) findViewById(R.id.shopping_list);
         listItems.setAdapter(getListItems());
@@ -95,14 +103,14 @@ public class SLMainActivity extends Activity {
     
     public ArrayAdapter<ShoppingListItem> getListItems() {
     	ArrayAdapter<ShoppingListItem> adapter = new ShoppingListArrayAdapter(this, android.R.layout.simple_list_item_single_choice);
-    	SQLiteDatabase db = shoppingListDB.getReadableDatabase();
-    	Cursor cursor = db.query("shopping_list_items", // table
-    							 new String[] {"id", "name", "price", "quantity"}, // columns
-    							 null, // selection
-    							 null, // selectionArgs
-    							 null, // groupBy
-    							 null, // having
-    							 "name"); // orderBy
+    	
+    	Selector selector = db.selector(tableName);
+    	selector.addColumns(new String[] { "id", "name", "price", "quantity" });
+    	selector.orderBy("id");
+    	int count = selector.execute();
+    	System.out.println("Selected (" + count + ") items");
+    	ResultSet cursor = selector.getResultSet();
+
     	while (cursor.moveToNext()) {
     		Integer id = cursor.getInt(0);
     		String name = cursor.getString(1);
@@ -118,11 +126,20 @@ public class SLMainActivity extends Activity {
     }
     
     public void deleteItem(Integer id) {
-    	SQLiteDatabase db = shoppingListDB.getWritableDatabase();
-    	db.delete("shopping_list_items", "id = ?", new String[] { id.toString() });
+    	Deleter deleter = db.deleter(tableName);
+    	deleter.where("id = ?", new String[] { id.toString() });
+    	deleter.execute();
+    	System.out.println("Deleted: id = " + id.toString());
     	
     	listItems.setAdapter(getListItems());
     	selectedItem = -1;
+    }
+    
+    private void createDBTable() {
+    	db.createTable(tableName, "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+    			"name TEXT NOT NULL, " +
+    			"price REAL NOT NULL, " +
+    			"quantity INTEGER NOT NULL");
     }
 
 }

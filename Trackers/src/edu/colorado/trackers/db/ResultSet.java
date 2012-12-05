@@ -28,6 +28,14 @@ public class ResultSet {
 	public String getString(int i) {
 		return cursor.getString(i);
 	}
+	
+	public Integer getInt(int i) {
+		return cursor.getInt(i);
+	}
+	
+	public Double getDouble(int i) {
+		return cursor.getDouble(i);
+	}
 
 	boolean isNull(int i) {
 		return cursor.isNull(i);

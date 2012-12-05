@@ -2,8 +2,6 @@ package edu.colorado.trackers.shoppinglist;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -13,10 +11,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import edu.colorado.trackers.R;
+import edu.colorado.trackers.db.Database;
+import edu.colorado.trackers.db.Deleter;
+import edu.colorado.trackers.db.Inserter;
+import edu.colorado.trackers.db.ResultSet;
+import edu.colorado.trackers.db.Selector;
 
 public class SLEditItem extends Activity {
 	
-	private ShoppingListDB shoppingListDB = new ShoppingListDB(this);
+	private Database db;
+	private String tableName = "shopping_list_items";
 	private Button cancelButton;
 	private Button okButton;
 	private Button minusButton;
@@ -32,6 +36,9 @@ public class SLEditItem extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sl_activity_edit_item);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        
+        db = new Database(this, "shopping_list.db");
+        
         itemId = getIntent().getIntExtra("item_id", -1);
         System.out.println("Edit Item onCreate: item id = " + itemId);
         
@@ -97,15 +104,18 @@ public class SLEditItem extends Activity {
         TextView textQuantity = (TextView) findViewById(R.id.sl_quantity);
     	
     	if (itemId != -1) {
-        	SQLiteDatabase db = shoppingListDB.getReadableDatabase();
-        	Cursor cursor = db.query("shopping_list_items", 
-        			new String[] {"id", "name", "price", "quantity"}, 
-        			"id = ?", new String[] { itemId.toString() }, null, null, null);
-        	cursor.moveToFirst();
-        	itemId = cursor.getInt(0);
-        	itemName = cursor.getString(1);
-        	itemPrice = cursor.getDouble(2);
-        	itemQuantity = cursor.getInt(3);
+    		Selector selector = db.selector(tableName);
+    		selector.addColumns(new String[] { "id", "name", "price", "quantity" });
+    		selector.where("id = ?", new String[] { itemId.toString() });
+    		selector.execute();
+    		ResultSet cursor = selector.getResultSet();
+    		
+    		if (cursor.moveToNext()) {
+	        	itemId = cursor.getInt(0);
+	        	itemName = cursor.getString(1);
+	        	itemPrice = cursor.getDouble(2);
+	        	itemQuantity = cursor.getInt(3);
+    		}
         	cursor.close();
     	}
     	
@@ -119,8 +129,6 @@ public class SLEditItem extends Activity {
 		super.onPause();
 		
 		if (saveData) {
-			SQLiteDatabase db = shoppingListDB.getWritableDatabase();
-			
 			EditText nameEdit = (EditText) findViewById(R.id.sl_name);
 			EditText priceEdit = (EditText) findViewById(R.id.sl_price);
 			TextView quantityText = (TextView) findViewById(R.id.sl_quantity);
@@ -137,19 +145,24 @@ public class SLEditItem extends Activity {
 			values.put("quantity", quantity);
 			
 			if (itemId != -1) {
-				db.update("shopping_list_items", values, "id = ?", new String[] { itemId.toString() });
-				System.out.println("Item (id=" + itemId + ") updated");
-			} else {
-				db.insertOrThrow("shopping_list_items", null, values);
-				System.out.println("Item added");
-			}
+				//db.update("shopping_list_items", values, "id = ?", new String[] { itemId.toString() });
+				//System.out.println("Item (id=" + itemId + ") updated");
+				Deleter deleter = db.deleter(tableName);
+				deleter.where("id = ?", new String[] { itemId.toString() });
+				deleter.execute();
+			} 
+			Inserter inserter = db.inserter(tableName);
+			inserter.columnNameValues(values);
+			inserter.execute();
+			System.out.println(String.format("Inserted: (%d) %s %.2f", quantity, name, price));
 		}
 	}
 	
+    
 	@Override
 	public void onStop() {
 		super.onStop();
-		shoppingListDB.close();
+		db.close();
 	}
 
 }
