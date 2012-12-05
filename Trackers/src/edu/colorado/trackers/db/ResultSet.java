@@ -17,7 +17,7 @@ public class ResultSet {
 		cursor = cur;
 	}
 	
-	void close() {
+	public void close() {
 		cursor.close();
 	}
 
@@ -25,7 +25,7 @@ public class ResultSet {
 		return cursor.getCount();
 	}
 	
-	String getString(int i) {
+	public String getString(int i) {
 		return cursor.getString(i);
 	}
 
@@ -33,7 +33,7 @@ public class ResultSet {
 		return cursor.isNull(i);
 	}
 	
-	boolean moveToNext() {
+	public boolean moveToNext() {
 		return cursor.moveToNext();
 	}
 }
