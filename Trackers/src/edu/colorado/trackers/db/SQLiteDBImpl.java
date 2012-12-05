@@ -29,12 +29,13 @@ public class SQLiteDBImpl {
 	public SQLiteDBImpl(Context con, String db) {
 		dbName = db;
 		context = con;
+		openReadMode();
 	}
 
 	protected void openReadMode() {
 		if (!isRead) {	
 			File dbFile= context.getDatabasePath(dbName);	
-			dbReadable = SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
+			dbReadable = SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY | SQLiteDatabase.CREATE_IF_NECESSARY);
 			isRead = true;
 		}
 	}
