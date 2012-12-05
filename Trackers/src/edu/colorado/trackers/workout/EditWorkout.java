@@ -1,5 +1,6 @@
 package edu.colorado.trackers.workout;
 
+import edu.colorado.trackers.R;
 import edu.colorado.trackers.db.*;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -25,7 +26,7 @@ public class EditWorkout extends Activity implements OnDateSetListener {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_workout_info);
+		setContentView(R.layout.w_activity_edit_item);
 		exercise = getIntent().getStringExtra("exercise");
 		db = new Database(this, "profiles.db");
 		
@@ -38,7 +39,7 @@ public class EditWorkout extends Activity implements OnDateSetListener {
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_workout_info, menu);
+		getMenuInflater().inflate(R.menu.w_activity_edit_item, menu);
 		return true;
 	}
 
