@@ -49,20 +49,25 @@
 	    <Button android:id="@+id/minus_button"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:textSize="24sp"
+	        android:layout_marginLeft="10sp"
+	        android:background="@color/red"
+	        android:textSize="42sp"
 	        android:text="@string/minus_sign" />
 	    
 	    <TextView android:id="@+id/sl_quantity"
 		    android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:textSize="24sp"
+			android:padding="24sp"
+			android:textSize="42sp"
 			android:text="@string/nine_nine" />
 	    
 	    <Button android:id="@+id/plus_button"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:textSize="24sp"
-	        android:text="@string/plus_sign" />	    
+	        android:background="@color/green"
+	        android:textSize="42sp"
+	        android:text="@string/plus_sign" />	  
+	          
 	</TableRow>
 
 	<TableRow
