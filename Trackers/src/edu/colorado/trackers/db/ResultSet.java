@@ -9,7 +9,7 @@ import android.database.Cursor;
  *
  */
 
-class ResultSet {
+public class ResultSet {
 
 	private Cursor cursor;
 

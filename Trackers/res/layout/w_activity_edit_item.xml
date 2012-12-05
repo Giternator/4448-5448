@@ -1,0 +1,123 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip" >
+   </TableRow>
+        
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip" >   
+        
+        <TextView     
+            android:id="@+id/textView2"
+            android:text="@string/label_exercise"
+            android:textSize="24sp" />
+    </TableRow>    
+    <TableRow
+        android:id="@+id/tableRow3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip" >          
+        <EditText
+            android:id="@+id/exercise"
+            android:ems="10"
+            android:hint="@string/hint_exercise"
+            android:inputType="textPersonName"
+            android:textSize="14sp" />
+     </TableRow>
+        
+    <TableRow
+        android:id="@+id/tableRow4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip" >  
+        <TextView
+            android:id="@+id/textView1"
+            android:paddingTop="20dp"
+            android:text="@string/label_sets"
+            android:textSize="24sp" />
+    </TableRow>
+        
+    <TableRow
+        android:id="@+id/tableRow5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip" >  
+        <EditText
+            android:id="@+id/sets"
+            android:ems="10"
+            android:hint="@string/hint_sets"
+            android:inputType="number"
+            android:textSize="14sp" />
+    </TableRow>
+    
+    <TableRow
+        android:id="@+id/tableRow6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip" >  
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_marginTop="24dp"
+            android:paddingTop="20dp"
+            android:text="@string/label_reps"
+            android:textSize="24sp" />
+    </TableRow>
+        
+    <TableRow
+        android:id="@+id/tableRow7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip" >  
+       <EditText
+            android:id="@+id/reps"
+            android:layout_marginTop="18dp"
+            android:ems="10"
+            android:hint="@string/hint_reps"
+            android:inputType="number"
+            android:textSize="14sp" />
+     </TableRow>
+    
+     <TableRow
+        android:id="@+id/tableRow8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip" >  
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_marginTop="18dp"
+            android:paddingTop="20dp"
+            android:text="@string/label_date"
+            android:textSize="24sp" />
+    </TableRow>
+        
+    <TableRow
+        android:id="@+id/tableRow9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip" >  
+    <EditText
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/hint_date"
+        android:inputType="datetime"
+        android:textSize="14sp" />
+    
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/chose_date" />
+    </TableRow>
+    
+</TableLayout>

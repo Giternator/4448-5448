@@ -6,6 +6,7 @@
     <string name="title_activity_main">Trackers</string>
     <string name="shopping_list">Shopping List</string>
     <string name="health_metrics">Health Metrics</string>
+    <string name="workout">Workout</string>
     <string name="title_activity_slmain">Shopping List</string>
     <string name="menu_new">New</string>
     <string name="menu_edit">Edit</string>
@@ -25,4 +26,30 @@
     <string name="minus_sign">-</string>
     <string name="plus_sign">+</string>
 
+    <!--Workout-->
+    <string name="menu_new_profile">New</string>
+    <string name="menu_delete_profile">Delete</string>
+    <string name="menu_activity_workout_info">edit</string>
+    <string name="menu_send_mail">Email Workout</string>
+    <string name="label_exercise">Exercise</string>
+    <string name="label_reps">Repitions</string>
+    <string name="hint_exercise">Enter Exercise Name</string>
+    <string name="hint_reps">Enter repititons</string>
+    <string name="label_sets">Sets</string>
+    <string name="hint_sets">Enter Sets</string>
+    <string name="label_date">Date</string>
+    <string name="hint_date">Enter Date</string>  
+    <string name="title_activity_workout_info">Test Activity</string>
+    <string name="delete_message">Delete workout?</string>
+    <string name="delete">Delete</string>    
+    <string name="cancel">Cancel</string>            
+    <string name="chose_date">Chose Date</string>        
+    
+     <!--Email-->
+    <string name="title_activity_sendemail">Send Email</string>
+    <string name="to">To : </string>      
+    <string name="subject">Subject : </string>     
+    <string name="message">Message : </string>
+    <string name="send">Send</string>  
+    
 </resources>

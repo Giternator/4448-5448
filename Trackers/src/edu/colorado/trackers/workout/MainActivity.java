@@ -1,6 +1,16 @@
 package edu.colorado.trackers.workout;
 
 
+import edu.colorado.trackers.workout.CancelDialog;
+
+import edu.colorado.trackers.db.Database;
+import edu.colorado.trackers.db.Deleter;
+import edu.colorado.trackers.workout.EditWorkout;
+import edu.colorado.trackers.workout.MainActivity;
+import edu.colorado.trackers.db.ResultSet;
+import edu.colorado.trackers.db.Selector;
+import edu.colorado.trackers.workout.SendEmail;
+
 import edu.colorado.trackers.workout.CancelDialog.CancleDialogListener;
 
 import android.os.Bundle;
@@ -18,7 +28,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import static android.provider.BaseColumns._ID;
-
 public class MainActivity extends Activity implements CancleDialogListener {
 
 	private ListView profiles;
@@ -56,7 +65,7 @@ public class MainActivity extends Activity implements CancleDialogListener {
 		super.onPrepareOptionsMenu(menu);
 		MenuItem delete = menu.findItem(R.id.menu_delete_profile);
 		MenuItem sendmail = menu.findItem(R.id.menu_send_mail);		
-		MenuItem edit = menu.findItem(R.id.menu_activity_test);
+		MenuItem edit = menu.findItem(R.id.menu_activity_workout_info);
 		if (itemSelected != -1) {
 			delete.setEnabled(true);
 			edit.setEnabled(true);
@@ -74,7 +83,7 @@ public class MainActivity extends Activity implements CancleDialogListener {
 		if (item.getItemId() == R.id.menu_new_profile) {
 			startActivity(intent);
 		}
-		if (item.getItemId() == R.id.menu_activity_test) {
+		if (item.getItemId() == R.id.menu_activity_workout_info) {
 			TextView text = (TextView) profiles.getChildAt(itemSelected);
 			intent.putExtra("exercise", text.getText().toString());
 			startActivity(intent);
