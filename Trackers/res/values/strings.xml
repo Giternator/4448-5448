@@ -29,8 +29,8 @@
     <!--Workout-->
     <string name="menu_new_profile">New</string>
     <string name="menu_delete_profile">Delete</string>
-    <string name="menu_activity_workout_info">edit</string>
-    <string name="menu_send_mail">Email Workout</string>
+    <string name="menu_activity_workout_info">Edit</string>
+    <string name="menu_send_mail">Email Workouts</string>
     <string name="label_exercise">Exercise</string>
     <string name="label_reps">Repitions</string>
     <string name="hint_exercise">Enter Exercise Name</string>

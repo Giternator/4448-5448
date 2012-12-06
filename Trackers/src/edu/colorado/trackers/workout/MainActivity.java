@@ -78,7 +78,7 @@ public class MainActivity extends Activity implements CancleDialogListener {
 		} else {
 			delete.setEnabled(false);
 			edit.setEnabled(false);
-			sendmail.setEnabled(false);
+			sendmail.setEnabled(true);
 		}
 		return true;
 	}
@@ -101,6 +101,25 @@ public class MainActivity extends Activity implements CancleDialogListener {
 		else if (item.getItemId() == R.id.menu_send_mail)
 		{
 			Intent intent_mail = new Intent(this, SendEmail.class);
+			intent_mail.putExtra("subject", "Workout Log");
+			
+			String[] str = {"exercise"};
+			Selector select = db.selector(tableName);
+			String workouts = new String("Workout " + "Exercise " + "Reps " + "Date " + "\n\n");
+			int count = select.execute();
+			if(count != 0) {
+				ResultSet cursor = select.getResultSet();
+				
+				while (cursor.moveToNext()) {
+					workouts += cursor.getString(1) + "---" + cursor.getString(2) + 
+							   "---" + cursor.getString(3) + "---" + cursor.getString(4) + "\n";
+					System.out.println("Got exercise: " + cursor.getString(0));
+					
+				}
+				cursor.close();
+			}
+
+			intent_mail.putExtra("content", workouts);
 			startActivity(intent_mail);
 		}
 		return true;
@@ -161,11 +180,6 @@ public class MainActivity extends Activity implements CancleDialogListener {
 	public void onDialogPositiveClick(DialogFragment dialog) {
 		TextView text = (TextView) profiles.getChildAt(itemSelected);
 		remove_name(text.getText().toString());		
-	}
-	
-	
-	
-	public void showEmailSendActivity() {
 	}
 
     public void showNoticeDialog() {

@@ -20,11 +20,18 @@ public class SendEmail extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_email);
- 
+		
 		buttonSend = (Button) findViewById(R.id.buttonSend);
 		textTo = (EditText) findViewById(R.id.editTextTo);
 		textSubject = (EditText) findViewById(R.id.editTextSubject);
 		textMessage = (EditText) findViewById(R.id.editTextMessage);
+		
+		String subject = getIntent().getStringExtra("subject");
+		
+		String workouts = getIntent().getStringExtra("content");
+		
+		textSubject.setText(subject);
+		textMessage.setText(workouts);
  
 		buttonSend.setOnClickListener(new OnClickListener() {
  
