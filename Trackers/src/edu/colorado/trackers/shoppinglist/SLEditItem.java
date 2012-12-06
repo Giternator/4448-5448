@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +27,9 @@ public class SLEditItem extends Activity {
 	private Button okButton;
 	private Button minusButton;
 	private Button plusButton;
+	private EditText nameEditText;
+	private EditText priceEditText;
+	private TextView quantityTextView;
 	private boolean saveData = true;
 	private Integer itemId = -1;
 	private String itemName = "";
@@ -46,6 +51,13 @@ public class SLEditItem extends Activity {
         okButton = (Button) findViewById(R.id.ok_button);
         minusButton = (Button) findViewById(R.id.minus_button);
         plusButton = (Button) findViewById(R.id.plus_button);
+        nameEditText = (EditText) findViewById(R.id.sl_name);
+        priceEditText = (EditText) findViewById(R.id.sl_price);
+        
+        okButton.setEnabled(validateFields());
+        nameEditText.addTextChangedListener(new LocalTextWatcher());
+        priceEditText.addTextChangedListener(new LocalTextWatcher());
+        quantityTextView.addTextChangedListener(new LocalTextWatcher());
         
         cancelButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -63,7 +75,7 @@ public class SLEditItem extends Activity {
 			public void onClick(View v) {
 				TextView quantity = (TextView) findViewById(R.id.sl_quantity);
 				Integer value = Integer.parseInt(quantity.getText().toString());
-				value -= (value > 0) ? 1 : 0;
+				value -= (value > 1) ? 1 : 0;
 				quantity.setText(value.toString());
 			}
 		});
@@ -99,9 +111,9 @@ public class SLEditItem extends Activity {
     	super.onResume();
     	saveData = true;
     	
-    	EditText editName = (EditText) findViewById(R.id.sl_name);
-        EditText editPrice = (EditText) findViewById(R.id.sl_price);
-        TextView textQuantity = (TextView) findViewById(R.id.sl_quantity);
+    	nameEditText = (EditText) findViewById(R.id.sl_name);
+        priceEditText = (EditText) findViewById(R.id.sl_price);
+        quantityTextView = (TextView) findViewById(R.id.sl_quantity);
     	
     	if (itemId != -1) {
     		Selector selector = db.selector(tableName);
@@ -118,10 +130,9 @@ public class SLEditItem extends Activity {
     		}
         	cursor.close();
     	}
-    	
-        editName.setText(itemName);
-        editPrice.setText(itemPrice.toString());
-        textQuantity.setText(itemQuantity.toString());
+        nameEditText.setText(itemName);
+        priceEditText.setText(itemPrice.toString());
+        quantityTextView.setText(itemQuantity.toString());
     }
     
     @Override
@@ -129,13 +140,17 @@ public class SLEditItem extends Activity {
 		super.onPause();
 		
 		if (saveData) {
-			EditText nameEdit = (EditText) findViewById(R.id.sl_name);
-			EditText priceEdit = (EditText) findViewById(R.id.sl_price);
-			TextView quantityText = (TextView) findViewById(R.id.sl_quantity);
+			nameEditText = (EditText) findViewById(R.id.sl_name);
+			priceEditText = (EditText) findViewById(R.id.sl_price);
+			quantityTextView = (TextView) findViewById(R.id.sl_quantity);
 			
-			String name = nameEdit.getText().toString();
-			String priceString = priceEdit.getText().toString();
-			String quantityString = quantityText.getText().toString();
+			if (!validateFields()) {
+				return;
+			}
+			
+			String name = nameEditText.getText().toString();
+			String priceString = priceEditText.getText().toString();
+			String quantityString = quantityTextView.getText().toString();
 			Double price = Double.parseDouble(priceString);
 			Integer quantity = Integer.parseInt(quantityString);
 			
@@ -145,8 +160,6 @@ public class SLEditItem extends Activity {
 			values.put("quantity", quantity);
 			
 			if (itemId != -1) {
-				//db.update("shopping_list_items", values, "id = ?", new String[] { itemId.toString() });
-				//System.out.println("Item (id=" + itemId + ") updated");
 				Deleter deleter = db.deleter(tableName);
 				deleter.where("id = ?", new String[] { itemId.toString() });
 				deleter.execute();
@@ -158,11 +171,49 @@ public class SLEditItem extends Activity {
 		}
 	}
 	
-    
 	@Override
 	public void onStop() {
 		super.onStop();
 		db.close();
 	}
+	
+	private boolean validateFields() {
+		nameEditText = (EditText) findViewById(R.id.sl_name);
+		priceEditText = (EditText) findViewById(R.id.sl_price);
+		quantityTextView = (TextView) findViewById(R.id.sl_quantity);
+		
+		String nameString = nameEditText.getText().toString();
+		String priceString = priceEditText.getText().toString();
+		String quantityString = quantityTextView.getText().toString();
+		
+		if (nameString.length() == 0) {
+			return false;
+		}
+		
+		try {
+			Double price = Double.parseDouble(priceString);
+			Integer quantity = Integer.parseInt(quantityString);
+			
+			if (price < 0.0) {
+				return false;
+			}
+			if (quantity < 1 || quantity > 99) {
+				return false;
+			}
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	private class LocalTextWatcher implements TextWatcher {
 
+		public void afterTextChanged(Editable s) {
+			okButton.setEnabled(validateFields());
+		}
+
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+		public void onTextChanged(CharSequence s, int start, int before, int count) {}
+	}
 }
