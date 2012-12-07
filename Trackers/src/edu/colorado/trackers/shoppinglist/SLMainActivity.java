@@ -2,6 +2,7 @@ package edu.colorado.trackers.shoppinglist;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.ContextMenu;
@@ -11,8 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import edu.colorado.trackers.R;
 import edu.colorado.trackers.db.Database;
 import edu.colorado.trackers.db.Deleter;
@@ -39,6 +42,8 @@ public class SLMainActivity extends Activity {
         
         listItems = (ListView) findViewById(R.id.shopping_list);
         listItems.setAdapter(getListItems());
+        
+        // Short click brings up context menu
         listItems.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> list, View view, int index, long id) {
@@ -49,6 +54,19 @@ public class SLMainActivity extends Activity {
 				SLMainActivity.this.invalidateOptionsMenu();
 			}
         });
+        
+        // Long click toggles strike through
+        listItems.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			public boolean onItemLongClick(AdapterView<?> list, View view, int index, long id) {
+				SLMainActivity.this.selectedItem = index;
+				View row = list.getChildAt(index);
+				TextView nameTextView = (TextView) row.findViewById(R.id.sl_row_name);
+				toggleStikeThrough(nameTextView);
+				SLMainActivity.this.invalidateOptionsMenu();
+				return true;
+			}
+		});
     }
 
     @Override
@@ -140,6 +158,14 @@ public class SLMainActivity extends Activity {
     			"name TEXT NOT NULL, " +
     			"price REAL NOT NULL, " +
     			"quantity INTEGER NOT NULL");
+    }
+    
+    private void toggleStikeThrough(TextView textView) {
+    	if ((textView.getPaintFlags() & Paint.STRIKE_THRU_TEXT_FLAG) > 0) {
+    		textView.setPaintFlags(textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+    	} else {    		
+    		textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+    	}
     }
 
 }
