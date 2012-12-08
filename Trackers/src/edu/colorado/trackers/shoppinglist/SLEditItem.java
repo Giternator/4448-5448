@@ -14,10 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import edu.colorado.trackers.R;
 import edu.colorado.trackers.db.Database;
-import edu.colorado.trackers.db.Deleter;
 import edu.colorado.trackers.db.Inserter;
 import edu.colorado.trackers.db.ResultSet;
 import edu.colorado.trackers.db.Selector;
+import edu.colorado.trackers.db.Updater;
 
 public class SLEditItem extends Activity {
 	
@@ -160,14 +160,17 @@ public class SLEditItem extends Activity {
 			values.put("quantity", quantity);
 			
 			if (itemId != -1) {
-				Deleter deleter = db.deleter(tableName);
-				deleter.where("id = ?", new String[] { itemId.toString() });
-				deleter.execute();
-			} 
-			Inserter inserter = db.inserter(tableName);
-			inserter.columnNameValues(values);
-			inserter.execute();
-			System.out.println(String.format("Inserted: (%d) %s %.2f", quantity, name, price));
+				Updater updater = db.updater(tableName);
+				updater.columnNameValues(values);
+				updater.where("id = ?", new String[] { itemId.toString() });
+				int count = updater.execute();
+				System.out.println("Updated " + count + " rows");
+			} else {
+				Inserter inserter = db.inserter(tableName);
+				inserter.columnNameValues(values);
+				inserter.execute();
+				System.out.println(String.format("Inserted: (%d) %s %.2f", quantity, name, price));
+			}
 		}
 	}
 	

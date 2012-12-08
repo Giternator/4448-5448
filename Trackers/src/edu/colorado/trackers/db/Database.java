@@ -74,6 +74,10 @@ public class Database {
 		
 	}
 	
+	public Updater updater(String tableName) {
+		return dbImpl.updater(tableName);
+	}
+	
 	/**
 	 * Returns a Deleter object which can be used to delete 
 	 * rows from a table.

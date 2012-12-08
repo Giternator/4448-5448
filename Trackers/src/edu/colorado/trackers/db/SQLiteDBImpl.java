@@ -82,6 +82,12 @@ public class SQLiteDBImpl {
 		Inserter ins = new Inserter(dbWritable, tableName);
 		return ins;
 	}
+	
+	public Updater updater(String tableName) {
+		openWriteMode();
+		Updater updater = new Updater(dbWritable, tableName);
+		return updater;
+	}
 		
 	public Deleter deleter(String tableName) {
 		openWriteMode();		

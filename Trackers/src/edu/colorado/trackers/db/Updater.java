@@ -20,13 +20,13 @@ public class Updater extends DMLQuery {
 		tableName = table;
 	}
 	
-	 void columnNameValues(ContentValues con) {
+	public void columnNameValues(ContentValues con) {
     	contentVals = con;
     }
     
 	public int execute() {
 		int ret = 0;
-		if (whereArgs.length == 0) {		
+		if (whereArgs.length != 0) {		
 			ret = db.update(tableName, contentVals, whereClause, whereArgs);
 		}
 		else  {
