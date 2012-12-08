@@ -6,6 +6,7 @@ public class ShoppingListItem {
 	private String name;
 	private Double price;
 	private Integer quantity;
+	private Boolean isCrossed = false;
 	
 	public ShoppingListItem(Integer id, String name, Double price, Integer quantity) {
 		this.id = id;
@@ -22,24 +23,20 @@ public class ShoppingListItem {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public Double getPrice() {
 		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
 	}
 
 	public Integer getQuantity() {
 		return quantity;
 	}
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
+	
+	public Boolean isCrossed() {
+		return isCrossed;
+	}
+	
+	public void toggleCrossed() {
+		isCrossed = !isCrossed;
 	}
 	
 	public String toString() {

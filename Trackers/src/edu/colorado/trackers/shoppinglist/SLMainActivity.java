@@ -1,6 +1,7 @@
 package edu.colorado.trackers.shoppinglist;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import edu.colorado.trackers.db.Database;
 import edu.colorado.trackers.db.Deleter;
 import edu.colorado.trackers.db.ResultSet;
 import edu.colorado.trackers.db.Selector;
+import edu.colorado.trackers.db.Updater;
 
 public class SLMainActivity extends Activity {
 	
@@ -41,32 +43,8 @@ public class SLMainActivity extends Activity {
         }
         
         listItems = (ListView) findViewById(R.id.shopping_list);
-        listItems.setAdapter(getListItems());
-        
-        // Short click brings up context menu
-        listItems.setOnItemClickListener(new OnItemClickListener() {
-
-			public void onItemClick(AdapterView<?> list, View view, int index, long id) {
-				SLMainActivity.this.selectedItem = index;
-				registerForContextMenu(listItems);
-				openContextMenu(listItems);
-				unregisterForContextMenu(listItems);
-				SLMainActivity.this.invalidateOptionsMenu();
-			}
-        });
-        
-        // Long click toggles strike through
-        listItems.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			public boolean onItemLongClick(AdapterView<?> list, View view, int index, long id) {
-				SLMainActivity.this.selectedItem = index;
-				View row = list.getChildAt(index);
-				TextView nameTextView = (TextView) row.findViewById(R.id.sl_row_name);
-				toggleStikeThrough(nameTextView);
-				SLMainActivity.this.invalidateOptionsMenu();
-				return true;
-			}
-		});
+        listItems.setOnItemClickListener(new SLOnItemClickListener());
+        listItems.setOnItemLongClickListener(new SLOnLongItemClickListener());
     }
 
     @Override
@@ -119,12 +97,18 @@ public class SLMainActivity extends Activity {
     	listItems.setAdapter(getListItems());
     }
     
+    @Override
+    public void onStop() {
+    	super.onStop();
+    	db.close();
+    }
+    
     public ArrayAdapter<ShoppingListItem> getListItems() {
     	ArrayAdapter<ShoppingListItem> adapter = new ShoppingListArrayAdapter(this, android.R.layout.simple_list_item_single_choice);
     	
     	Selector selector = db.selector(tableName);
-    	selector.addColumns(new String[] { "id", "name", "price", "quantity" });
-    	selector.orderBy("id");
+    	selector.addColumns(new String[] { "id", "name", "price", "quantity", "is_crossed" });
+    	selector.orderBy("name");
     	int count = selector.execute();
     	System.out.println("Selected (" + count + ") items");
     	ResultSet cursor = selector.getResultSet();
@@ -134,8 +118,10 @@ public class SLMainActivity extends Activity {
     		String name = cursor.getString(1);
     		Double price = cursor.getDouble(2);
     		Integer quantity = cursor.getInt(3);
+    		Boolean isCrossed = (cursor.getInt(4) == 0) ? false : true;
     		
     		ShoppingListItem item = new ShoppingListItem(id, name, price, quantity);
+    		if (isCrossed) item.toggleCrossed();
     		adapter.add(item);
     		System.out.println("Got item: " + item);
     	}
@@ -157,7 +143,8 @@ public class SLMainActivity extends Activity {
     	db.createTable(tableName, "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
     			"name TEXT NOT NULL, " +
     			"price REAL NOT NULL, " +
-    			"quantity INTEGER NOT NULL");
+    			"quantity INTEGER NOT NULL, " +
+    			"is_crossed INTEGER NOT NULL DEFAULT 0");
     }
     
     private void toggleStikeThrough(TextView textView) {
@@ -166,6 +153,39 @@ public class SLMainActivity extends Activity {
     	} else {    		
     		textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
     	}
+    }
+    
+    private class SLOnItemClickListener implements OnItemClickListener {
+    	
+    	public void onItemClick(AdapterView<?> list, View view, int index, long id) {
+			SLMainActivity.this.selectedItem = index;
+			registerForContextMenu(listItems);
+			openContextMenu(listItems);
+			unregisterForContextMenu(listItems);
+		}
+    }
+    
+    private class SLOnLongItemClickListener implements OnItemLongClickListener {
+
+    	public boolean onItemLongClick(AdapterView<?> list, View view, int index, long id) {
+			ShoppingListItem item = (ShoppingListItem) listItems.getItemAtPosition(index);
+			item.toggleCrossed();
+			
+			ContentValues values = new ContentValues();
+			values.put("is_crossed", item.isCrossed() ? 1 : 0);
+			
+			Updater updater = db.updater(tableName);
+			updater.columnNameValues(values);
+			updater.where("id = ?", new String[] { item.getId().toString() });
+			updater.execute();
+			
+			View row = list.getChildAt(index);
+			TextView nameTextView = (TextView) row.findViewById(R.id.sl_row_name);
+			toggleStikeThrough(nameTextView);
+			
+			System.out.println("Toggle cross: " + item.toString());
+			return true;
+		}
     }
 
 }

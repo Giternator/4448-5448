@@ -2,6 +2,7 @@ package edu.colorado.trackers.shoppinglist;
 
 import edu.colorado.trackers.R;
 import android.app.Activity;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +22,20 @@ public class ShoppingListArrayAdapter extends ArrayAdapter<ShoppingListItem> {
 	public View getView(int position, View convertView, ViewGroup parent) {		
 		LayoutInflater inflater = context.getLayoutInflater();
 		View row = inflater.inflate(R.layout.sl_row, parent, false);
+		
 		TextView quantityView = (TextView) row.findViewById(R.id.sl_row_quantity);
 		TextView nameView = (TextView) row.findViewById(R.id.sl_row_name);
 		TextView priceView = (TextView) row.findViewById(R.id.sl_row_price);
 		
-		quantityView.setText(super.getItem(position).getQuantity().toString());
-		nameView.setText(super.getItem(position).getName());
-		priceView.setText(String.format("$%.2f", super.getItem(position).getPrice()));
+		ShoppingListItem item = super.getItem(position);
+		
+		quantityView.setText(item.getQuantity().toString());
+		nameView.setText(item.getName());
+		priceView.setText(String.format("$%.2f", item.getPrice()));
+		
+		if (item.isCrossed()) {
+			nameView.setPaintFlags(nameView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		}
 		
 		return row;
 	}
