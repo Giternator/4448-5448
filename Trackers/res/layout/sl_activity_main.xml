@@ -1,11 +1,20 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
     <ListView android:id="@+id/shopping_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+		android:layout_weight="1"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
         android:scrollbars="vertical" />
+    
+    <TextView android:id="@+id/shopping_list_total"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8sp"
+        android:textSize="32sp"
+        android:gravity="right" />
 
-</RelativeLayout>
+</LinearLayout>

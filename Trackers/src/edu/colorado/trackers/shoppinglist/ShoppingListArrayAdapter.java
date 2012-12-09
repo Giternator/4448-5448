@@ -39,5 +39,14 @@ public class ShoppingListArrayAdapter extends ArrayAdapter<ShoppingListItem> {
 		
 		return row;
 	}
+	
+	public Double calculateTotalCost() {
+		Double total = 0.0;
+		for (int i = 0; i < super.getCount(); i++) {
+			ShoppingListItem item = super.getItem(i);
+			total += item.getPrice();
+		}
+		return total;
+	}
 
 }

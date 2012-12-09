@@ -27,6 +27,7 @@ import edu.colorado.trackers.db.Updater;
 public class SLMainActivity extends Activity {
 	
 	private ListView listItems;
+	private TextView totalCostTextView;
 	private int selectedItem = -1;
 	private Database db;
 	private String tableName = "shopping_list_items";
@@ -42,7 +43,9 @@ public class SLMainActivity extends Activity {
         	createDBTable();
         }
         
+        totalCostTextView = (TextView) findViewById(R.id.shopping_list_total);
         listItems = (ListView) findViewById(R.id.shopping_list);
+        
         listItems.setOnItemClickListener(new SLOnItemClickListener());
         listItems.setOnItemLongClickListener(new SLOnLongItemClickListener());
     }
@@ -81,6 +84,7 @@ public class SLMainActivity extends Activity {
     	if (item.getItemId() == R.id.context_menu_delete) {
     		System.out.println("Deleted item: " + slItem);
     		deleteItem(slItem.getId());
+    		updateTotalCost();
     	} else if (item.getItemId() == R.id.context_menu_edit) {
     		Intent intent = new Intent(this, SLEditItem.class);
     		intent.putExtra("item_id", slItem.getId());
@@ -95,6 +99,7 @@ public class SLMainActivity extends Activity {
     public void onResume() {
     	super.onResume();
     	listItems.setAdapter(getListItems());
+    	updateTotalCost();
     }
     
     @Override
@@ -153,6 +158,11 @@ public class SLMainActivity extends Activity {
     	} else {    		
     		textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
     	}
+    }
+    
+    private void updateTotalCost() {
+    	ShoppingListArrayAdapter items = (ShoppingListArrayAdapter) listItems.getAdapter();
+    	totalCostTextView.setText(String.format("Total: $%.2f", items.calculateTotalCost()));
     }
     
     private class SLOnItemClickListener implements OnItemClickListener {
