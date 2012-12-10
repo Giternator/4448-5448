@@ -122,7 +122,6 @@ public class DisplayCheck extends Activity {
     	else if(ret == 2)
     	{
     		view.setVisibility(View.GONE);
-            b.setBackgroundResource(R.drawable.unknown);
             b.setVisibility(View.GONE);
     	}
     }

@@ -1,5 +1,6 @@
 package com.example.healthmetrics;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ public class HealthMetrics extends Activity
     	intent.putExtra(EXTRA_MESSAGE, buttonText);       //send the button text to the next activity
     	startActivity(intent);                            //start the Display metric activity
     }
+   
     
     /** Called when the user clicks the Check button */
     public void callCheck(View view) {

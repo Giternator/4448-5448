@@ -2,6 +2,7 @@ package com.example.healthmetrics;
 
 import java.util.Calendar;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -31,6 +32,7 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
 	private String tableName = "healthMetrics15";           //db table for healthMetric
 	
 	String Titlemessage;     								//title displayed at the top of the page
+	String EmailMessage;
 	
     Calendar cal        =  Calendar.getInstance();          //get today's date
     int      setYear    =  cal.get(Calendar.YEAR);
@@ -100,14 +102,17 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
     	System.out.println("Selected (" + count + ") items");
     	ResultSet cursor = selector.getResultSet();
     	
-    	
-    	cursor.moveToLast();
-    	
-    	while (!cursor.isBeforeFirst()) {
-
+    	if(cursor.getCount() > 0)
+    	{
+    		cursor.moveToLast();
+    		EmailMessage = "     Reading              Date   \n";
+    		while (!cursor.isBeforeFirst()) 
+    		{
     		counter++;
     		Integer reading  = cursor.getInt(1); 
     		String date      = cursor.getString(2);
+    		
+    		EmailMessage +=   reading + "         " + date + "\n";
     		
     		TableRow row     = new TableRow(this);
         	TextView t1 = new TextView(this);       // create a new TextView for reading     
@@ -135,8 +140,10 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
             table.addView(row,new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             
             cursor.moveToPrevious();
+    		}
+    		cursor.close();
     	}
-    	cursor.close();
+    	
         System.out.println("5");
     }
     
@@ -173,6 +180,16 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
         String message = "more data";
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
+    }
+    
+    /** Called when the user clicks the Check button */
+    @SuppressLint("NewApi")
+	public void sendEmail(View view) {
+    	String subject = Titlemessage;
+    	String content = "ansakdkajdlasjdi lkjd";
+		System.out.println("Got email: " + EmailMessage);
+		SendEmail s= new SendEmail(subject, content); 
+        s.show(getFragmentManager(), "Email healthMetric");
     }
     
     /** Called when the user clicks the add button */
