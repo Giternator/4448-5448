@@ -39,7 +39,7 @@ public class GraphActivity extends Activity {
     	title = "Cholesterol";
     	if(getDBValues() == 1)
 		{
-			Intent lineIntent = line.getIntent(this, "Cholesterol", dateDB, yMin, yMax, xMax,  yDB );
+			Intent lineIntent = line.getIntent(this, title, dateDB, yMin, yMax, xMax,  yDB );
 			startActivity(lineIntent);
 		}
 		else
@@ -59,7 +59,7 @@ public class GraphActivity extends Activity {
     	title = "BloodPressure";
 		if(getDBValues() == 1)
 		{
-			Intent lineIntent = line.getIntent(this, "BloodPressure", dateDB, yMin, yMax, xMax,  yDB );
+			Intent lineIntent = line.getIntent(this, title, dateDB, yMin, yMax, xMax,  yDB );
 			startActivity(lineIntent);
 		}
 		else
@@ -79,7 +79,7 @@ public class GraphActivity extends Activity {
     	title = "Sugar";
     	if(getDBValues() == 1)
 		{
-    		Intent lineIntent = line.getIntent(this, "Sugar", dateDB, yMin, yMax, xMax,  yDB );
+    		Intent lineIntent = line.getIntent(this, title, dateDB, yMin, yMax, xMax,  yDB );
 			startActivity(lineIntent);
 		}
 		else
@@ -98,7 +98,7 @@ public class GraphActivity extends Activity {
     	title = "Temperature";
     	if(getDBValues() == 1)
 		{
-			Intent lineIntent = line.getIntent(this, "Temperature", dateDB, yMin, yMax, xMax,  yDB );
+    		Intent lineIntent = line.getIntent(this, title, dateDB, yMin, yMax, xMax,  yDB );
 			startActivity(lineIntent);
 		}
 		else
@@ -117,7 +117,7 @@ public class GraphActivity extends Activity {
     	title = "HeartRate";
     	if(getDBValues() == 1)
     	{
-			Intent lineIntent = line.getIntent(this, "HeartRate", dateDB, yMin, yMax, xMax,  yDB );
+    		Intent lineIntent = line.getIntent(this, title, dateDB, yMin, yMax, xMax,  yDB );
 			startActivity(lineIntent);
 		}
 		else
