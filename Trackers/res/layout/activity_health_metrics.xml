@@ -1,0 +1,96 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <Button
+        android:id="@+id/Button06"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="17dp"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/back"
+		android:onClick="selectMetric" />
+
+    <Button
+        android:id="@+id/Button07"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/Button06"
+        android:layout_alignBottom="@+id/Button06"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        
+        android:background="@drawable/test"
+        android:onClick="callCheck" />
+
+    <Button
+        android:id="@+id/Button01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/Button02"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/Button02"
+        android:layout_marginTop="21dp"
+        android:text="@string/Cholesterol" 
+    	android:onClick="selectMetric" />
+
+    <Button
+        android:id="@+id/Button02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Button01"
+        android:layout_marginTop="21dp"
+        android:layout_toLeftOf="@+id/Button07"
+        android:text="@string/BloodPressure" 
+		android:onClick="selectMetric" />
+
+    <Button
+        android:id="@+id/Button03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/Button04"
+        android:layout_alignRight="@+id/Button02"
+        android:layout_below="@+id/Button02"
+        android:layout_marginTop="21dp"
+        android:text="@string/Sugar" 
+        android:onClick="selectMetric" />
+
+    <Button
+        android:id="@+id/Button04"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/Button02"
+        android:layout_alignRight="@+id/Button02"
+        android:layout_below="@+id/Button03"
+        android:layout_marginTop="21dp"
+        android:text="@string/Temperature" 
+        android:onClick="selectMetric" />
+
+    <Button
+        android:id="@+id/Button05"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/Button03"
+        android:layout_alignRight="@+id/Button04"
+        android:layout_below="@+id/Button04"
+        android:layout_marginTop="21dp"
+        android:text="@string/HeartRate" 
+        android:onClick="selectMetric" />
+
+    <Button
+        android:id="@+id/Button08"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/Button07"
+        android:layout_alignBottom="@+id/Button07"
+        android:layout_centerHorizontal="true"
+        android:onClick="lineGraphHandler"
+        android:background="@drawable/graph"
+         />
+
+
+    
+</RelativeLayout>

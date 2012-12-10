@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+     
+    <TableLayout android:id="@+id/TableLayout01" android:layout_width="fill_parent" android:layout_height="wrap_content" android:stretchColumns="*" >
+      
+    <TableRow android:id="@+id/TableRow01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop ="15dp">      
+      <TextView android:id="@+id/TextView11" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/agePrompt"
+          		android:gravity = "center" android:layout_span="1"></TextView> 
+      <EditText android:id="@+id/age" android:layout_width="3dp" android:layout_height="wrap_content"
+          	    android:maxLength = "3" android:numeric="integer" android:layout_span="5" android:layout_marginLeft="125dip"></EditText>
+    </TableRow>    
+        
+     </TableLayout>
+    <TableLayout android:id="@+id/TableValue" android:layout_width="fill_parent" android:layout_height="wrap_content" android:stretchColumns="2" android:layout_marginTop ="45dp">
+        
+    <TableRow android:id="@+id/TableRow02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop ="10dp" android:layout_marginBottom ="15dp">      
+      <Button android:id="@+id/TextView21" android:layout_width="fill_parent" android:layout_span="1" android:layout_height="wrap_content" android:text="@string/Cholesterol" android:onClick="check"></Button>
+      <Button android:id="@+id/TextView22" android:layout_width="fill_parent" android:layout_height="wrap_content" android:background="@drawable/red"  
+          android:layout_span="2" android:layout_marginLeft="95dip" android:visibility="gone"></Button>
+    </TableRow>
+
+    <TableRow android:id="@+id/TableRow03" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom ="15dp">
+      <Button android:id="@+id/TextView31" android:layout_width="fill_parent" android:layout_span="1" android:layout_height="wrap_content" android:text="@string/BloodPressure" android:onClick="check"></Button>
+      <Button android:id="@+id/TextView32" android:layout_width="fill_parent" android:layout_height="wrap_content" android:background="@drawable/red"  
+          android:layout_span="2" android:layout_marginLeft="95dip" android:visibility="gone"></Button>
+    </TableRow>
+    
+     <TableRow android:id="@+id/TableRow04" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom ="15dp">
+      <Button android:id="@+id/TextView41" android:layout_width="fill_parent" android:layout_span="1" android:layout_height="wrap_content" android:text="@string/Sugar" android:onClick="check"></Button>
+      <Button android:id="@+id/TextView42" android:layout_width="fill_parent" android:layout_height="wrap_content" 
+          android:layout_span="2" android:layout_marginLeft="95dip" android:background="@drawable/red"  android:visibility="gone"></Button>
+    </TableRow>
+    
+    <TableRow android:id="@+id/TableRow05" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom ="15dp">
+      <Button android:id="@+id/TextView51" android:layout_width="fill_parent" android:layout_span="1" android:layout_height="wrap_content" android:text="@string/Temperature" android:onClick="check"></Button>
+      <Button android:id="@+id/TextView52" android:layout_width="fill_parent" android:layout_height="wrap_content" 
+          android:layout_span="2" android:layout_marginLeft="95dip" android:background="@drawable/red"  android:visibility="gone"></Button>
+    </TableRow>
+    
+    <TableRow android:id="@+id/TableRow06" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom ="15dp">
+      <Button android:id="@+id/TextView61" android:layout_width="fill_parent" android:layout_span="1" android:layout_height="wrap_content" android:text="@string/HeartRate" android:onClick="check"></Button>
+      <Button android:id="@+id/TextView62" android:layout_width="fill_parent" android:layout_height="wrap_content" 
+          android:layout_span="2" android:layout_marginLeft="95dip" android:background="@drawable/red"  android:visibility="gone"></Button>
+    </TableRow>
+    </TableLayout>
+
+  <Button
+        android:id="@+id/Button07"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="14dp"
+        android:onClick="done"
+        android:background="@drawable/back"/>
+</RelativeLayout>

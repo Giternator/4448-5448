@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <Button
+        android:id="@+id/Graphdone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="17dp"
+        android:layout_marginLeft="16dp"
+        android:onClick="done"
+        android:background="@drawable/back" />
+
+    <Button
+        android:id="@+id/chGraph"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:onClick="CholesterolGraph"
+        android:text="@string/Cholesterol" />
+
+    <Button
+        android:id="@+id/bpGraph"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/chGraph"
+        android:layout_marginTop="28dp"
+        android:onClick="BloodPressureGraph"
+        android:text="@string/BloodPressure" />
+
+    <Button
+        android:id="@+id/suGraph"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/bpGraph"
+        android:layout_marginTop="28dp"
+        android:onClick="SugarGraph"
+        android:text="@string/Sugar" />
+
+    <Button
+        android:id="@+id/tmGraph"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/suGraph"
+        android:layout_marginTop="28dp"
+        android:onClick="TemperatureGraph"
+        android:text="@string/Temperature" />
+
+    <Button
+        android:id="@+id/hrGraph"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tmGraph"
+        android:layout_marginTop="28dp"
+        android:onClick="HeartRateGraph"
+        android:text="@string/HeartRate" />
+
+</RelativeLayout>

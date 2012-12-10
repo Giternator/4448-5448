@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+     
+   <TableLayout android:id="@+id/TableLayout02" android:layout_width="fill_parent" android:layout_height="wrap_content" android:stretchColumns="*">
+      
+    <TableRow android:id="@+id/TableRow01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop ="5dp">
+      <TextView android:id="@+id/TextView11" android:layout_width="15dp" android:layout_height="wrap_content" android:text="@string/Reading"  
+          		android:layout_span="1" android:layout_marginLeft="10dip"></TextView>
+      <TextView android:id="@+id/TextView12" android:layout_width="15dp" android:layout_height="wrap_content" android:text="@string/Date"  
+          		android:layout_span="2" ></TextView>  
+    </TableRow> 
+  	</TableLayout>
+  	
+  <TableLayout android:id="@+id/TableLayout03" android:layout_width="fill_parent" android:layout_height="wrap_content"  android:stretchColumns="*" android:layout_marginTop="15dip">
+    <TableRow android:id="@+id/TableRow02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop ="15dp">      
+      <EditText android:id="@+id/ReadingInput" android:layout_width="6dp" android:layout_height="wrap_content"
+          	 android:maxLength = "3" android:numeric="integer" android:layout_span="1" android:singleLine="true" android:ellipsize="end" >   </EditText> 
+     
+      <Button android:id="@+id/datePicker" android:onClick="pickDate" android:layout_width="fill_parent" android:layout_marginLeft="42dip" android:background="@drawable/cal"
+          	android:layout_span="3" android:singleLine="true" ></Button>
+     
+     <Button android:id="@+id/addEntry" android:gravity = "center" android:layout_span="3"  
+         	android:layout_marginLeft="62dip" android:background="@drawable/done1" android:visibility="gone" android:onClick="addEntry"></Button>  
+    </TableRow>  
+  </TableLayout>   
+    
+   <ScrollView android:id="@+id/ScrollView01" android:layout_width="wrap_content" android:layout_height="325dp" android:layout_marginTop ="75dp">-->
+    <TableLayout android:id="@+id/TableLayout01"  android:layout_width="wrap_content" android:layout_height="wrap_content"  android:stretchColumns="*">
+    </TableLayout>
+   </ScrollView>
+
+<Button
+    android:id="@+id/Button07"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:layout_marginRight="18dp"
+    android:background="@drawable/back"
+    android:onClick="back"/>
+
+<Button
+    android:id="@+id/button2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:layout_marginLeft="24dp"
+    android:background="@drawable/delall"
+    android:onClick="deleteAll" />
+
+<Button
+    android:id="@+id/button1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:background="@drawable/email"
+    android:onClick="sendEmail" />
+
+</RelativeLayout>
