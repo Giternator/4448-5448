@@ -1,6 +1,5 @@
 package edu.colorado.trackers.shoppinglist;
 
-import edu.colorado.trackers.R;
 import android.app.Activity;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -8,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import edu.colorado.trackers.R;
 
 public class ShoppingListArrayAdapter extends ArrayAdapter<ShoppingListItem> {
 	
@@ -47,6 +47,15 @@ public class ShoppingListArrayAdapter extends ArrayAdapter<ShoppingListItem> {
 			total += item.getPrice();
 		}
 		return total;
+	}
+	
+	public String getListAsString() {
+		String result = "";
+		for (int i = 0; i < super.getCount(); i++) {
+			ShoppingListItem item = super.getItem(i);
+			result += (item.toString() + "\n");
+		}
+		return result;
 	}
 
 }

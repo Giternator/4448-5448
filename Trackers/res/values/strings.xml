@@ -20,6 +20,7 @@
     <string name="sl_price_hint">How much it costs</string>
     <string name="sl_quantity_label">Quantity:</string>
     <string name="sl_quantity_hint">The number of items</string>
+    <string name="sl_email_list">Email List</string>
     <string name="num_one">1</string>
     <string name="nine_nine">99</string>
     <string name="one_dollar">$1.00</string>

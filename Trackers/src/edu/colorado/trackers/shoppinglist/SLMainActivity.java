@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import edu.colorado.trackers.R;
+import edu.colorado.trackers.SendEmail;
 import edu.colorado.trackers.db.Database;
 import edu.colorado.trackers.db.Deleter;
 import edu.colorado.trackers.db.ResultSet;
@@ -73,6 +74,12 @@ public class SLMainActivity extends Activity {
             case R.id.sl_menu_new_item:
             	Intent intent = new Intent(this, SLEditItem.class);
             	startActivity(intent);
+            	
+            case R.id.sl_menu_email:
+            	ShoppingListArrayAdapter items = (ShoppingListArrayAdapter) listItems.getAdapter();
+            	String content = items.getListAsString();
+            	SendEmail s = new SendEmail("Shopping List", content);
+            	s.show(getFragmentManager(), "Email Shopping List");
         }
         return super.onOptionsItemSelected(item);
     }
