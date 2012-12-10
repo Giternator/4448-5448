@@ -11,12 +11,19 @@ import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 public class LineGraph{
 
@@ -34,21 +41,21 @@ public class LineGraph{
 	
 	XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer(); 
 	
-	public Intent getIntent(Context context, String database, String type) 
+	public Intent getIntent(Context context, String database, String type, XYMultipleSeriesDataset dataset1) 
 	{	
 		title = type;
 		Series = new TimeSeries(title);	
 		
 		if(database.equals("healthMetric"))
-			db = new Database(context, "healthmetric14.db");
+			db = new Database(context, "healthmetric15.db");
 		else if(database.equals("workout"))
-			db = new Database(context, "healthmetric14.db");
+			db = new Database(context, "healthmetric15.db");
 		if(database.equals("shopping"))
 			db = new Database(context, "Shopping.db");
 		
 		setDataset();	
 		setRender();
-		Intent intent = ChartFactory.getLineChartIntent(context, dataset, mRenderer, title);
+		Intent intent = ChartFactory.getLineChartIntent(context, dataset1, mRenderer, title);
 		return intent;	
 	}
 	
@@ -104,28 +111,38 @@ public class LineGraph{
 	public void getDBValues() 
 	{
 		yDB.clear();
-    	Selector selector = db.selector("healthMetrics14");
+    	Selector selector = db.selector("healthMetrics15");       //give your table name here
     	selector.addColumns(new String[] { "id", "reading", "date"});
     	if(!title.equals(null))
     		selector.where("type = ?", new String[] {title}); 
-    	selector.orderBy("id");
+    	//selector.orderBy("id");
     	int count = selector.execute();
     	System.out.println("Selected (" + count + ") items");
     	ResultSet cursor = selector.getResultSet();
 
-    	while (cursor.moveToNext()) {
-    		Integer reading = cursor.getInt(1); 
-    		String date = cursor.getString(2);
-    		if(yMin == 0)
-    			yMin = reading;
-    		if(reading < yMin)
-    			yMin = reading;
-    		if(reading > yMax)
-    			yMax = reading;
-    		yDB.add(reading);   
-    		dateDB.add(date);
-    		System.out.println("Data: "+ reading);
+    	//cursor = null;
+    	if(cursor.getCount() != 0)
+    	{
+    		cursor.moveToLast();
+    		while (!cursor.isBeforeFirst()) 
+    		{
+    			Integer reading = cursor.getInt(1); 
+    			String date = cursor.getString(2);
+    			if(yMin == 0)
+    				yMin = reading;
+    			if(reading < yMin)
+    				yMin = reading;
+    			if(reading > yMax)
+    				yMax = reading;
+    			yDB.add(reading);   
+    			dateDB.add(date);
+    			System.out.println("Data: "+ reading);
+    			cursor.moveToPrevious();
+    		}
     	}
     	cursor.close();
     }
+	
+
+
 }
