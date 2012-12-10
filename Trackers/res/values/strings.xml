@@ -45,9 +45,32 @@
     <string name="delete">Delete</string>    
     <string name="cancel">Cancel</string>            
     <string name="chose_date">Chose Date</string>        
-    
+	
      <!--Email-->
     <string name="email_message">Send Email To:</string>
     <string name="ok_email">OK</string>
-        
+		
+	<!--Health Metrics -->
+	<!--<string name="app_name">HealthMetrics</string>-->
+    <string name="title_activity_health_metrics">HealthMetrics</string>
+    <string name="Cholesterol">Cholesterol</string>
+    <string name="BloodPressure">Blood Pressure</string>
+    <string name="Sugar">Sugar</string>
+    <string name="HeartRate">Heart Rate</string>
+    <string name="Temperature">Temperature</string>
+    <string name="Home">Home</string>
+    <string name="Graph">Graph</string>
+    <string name="Check">Check</string>
+    <string name="title_activity_display_metric">DisplayMetric</string>
+    <string name="Reading">Reading</string>
+    <string name="Date">Date</string>
+    <string name="aa">Home</string>
+    <string name="bb">Check</string>
+    <string name="DeleteAll">DeleteAll</string>
+    <string name="Done">Done</string>
+    <string name="green">G</string>
+    <string name="agePrompt">Enter your age</string>
+    <string name="title_activity_display_check">Check Metrics</string>
+    <string name="title_activity_graph">GraphActivity</string>
+	    
 </resources>
