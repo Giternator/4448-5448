@@ -13,10 +13,9 @@ public class bloodPressure extends Metric
 		db = new Database(context, "healthmetric15.db");
 		title = "BloodPressure";
 		getLatestReading();
-		//return 0;
 		
 		//get the latest value stored in database
-		if(lastReading == 0)
+		if(lastReading == 0)   //if no record
 			return 2;
 		if(age >= 1 && age <= 19)
 		{
@@ -63,7 +62,7 @@ public class bloodPressure extends Metric
 		return 0;
 	}
 	@SuppressWarnings("unused")
-	public void getLatestReading() 
+	public void getLatestReading() 			//get the latest reading from db 
 	{
     	Selector selector = db.selector("healthMetrics15");       //give your table name here
     	selector.addColumns(new String[] { "id", "reading", "date"});

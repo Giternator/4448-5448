@@ -22,15 +22,8 @@ public class GraphActivity extends Activity {
 	private Database db;
 	List<Integer> yDB = new ArrayList<Integer>();
 	List<String> dateDB = new ArrayList<String>();
-	int yMin = 0, yMax = 0;
-	int xMax = 0;
-	
-	XYMultipleSeriesDataset Cholesteroldataset = new XYMultipleSeriesDataset();
-	XYMultipleSeriesDataset BPdataset = new XYMultipleSeriesDataset();
-	XYMultipleSeriesDataset Sugardataset = new XYMultipleSeriesDataset();
-	XYMultipleSeriesDataset Tempdataset = new XYMultipleSeriesDataset();
-	XYMultipleSeriesDataset HRdataset = new XYMultipleSeriesDataset();
-	TimeSeries Series;
+	int yMin = 0, yMax = 0, xMax = 0;
+
 	String title;
 	PopupWindow popupWindow;
     @Override
@@ -46,8 +39,7 @@ public class GraphActivity extends Activity {
     	title = "Cholesterol";
     	if(getDBValues() == 1)
 		{
-    		Cholesteroldataset = setDataset();
-			Intent lineIntent = line.getIntent(this, "healthMetric", "Cholesterol", Cholesteroldataset);
+			Intent lineIntent = line.getIntent(this, "Cholesterol", dateDB, yMin, yMax, xMax,  yDB );
 			startActivity(lineIntent);
 		}
 		else
@@ -67,8 +59,7 @@ public class GraphActivity extends Activity {
     	title = "BloodPressure";
 		if(getDBValues() == 1)
 		{
-			BPdataset = setDataset();
-			Intent lineIntent = line.getIntent(this, "healthMetric", "BloodPressure", BPdataset);
+			Intent lineIntent = line.getIntent(this, "BloodPressure", dateDB, yMin, yMax, xMax,  yDB );
 			startActivity(lineIntent);
 		}
 		else
@@ -88,8 +79,7 @@ public class GraphActivity extends Activity {
     	title = "Sugar";
     	if(getDBValues() == 1)
 		{
-    		Sugardataset = setDataset();
-			Intent lineIntent = line.getIntent(this, "healthMetric", "Sugar", Sugardataset);
+    		Intent lineIntent = line.getIntent(this, "Sugar", dateDB, yMin, yMax, xMax,  yDB );
 			startActivity(lineIntent);
 		}
 		else
@@ -108,8 +98,7 @@ public class GraphActivity extends Activity {
     	title = "Temperature";
     	if(getDBValues() == 1)
 		{
-    		Tempdataset = setDataset();
-			Intent lineIntent = line.getIntent(this, "healthMetric", "Temperature", Tempdataset);
+			Intent lineIntent = line.getIntent(this, "Temperature", dateDB, yMin, yMax, xMax,  yDB );
 			startActivity(lineIntent);
 		}
 		else
@@ -127,9 +116,8 @@ public class GraphActivity extends Activity {
     	LineGraph line = new LineGraph();
     	title = "HeartRate";
     	if(getDBValues() == 1)
-		{
-    		HRdataset = setDataset();
-			Intent lineIntent = line.getIntent(this, "healthMetric", "HeartRate", HRdataset);
+    	{
+			Intent lineIntent = line.getIntent(this, "HeartRate", dateDB, yMin, yMax, xMax,  yDB );
 			startActivity(lineIntent);
 		}
 		else
@@ -143,6 +131,7 @@ public class GraphActivity extends Activity {
 		}
     }
     /** Called when the user clicks the done button */
+    
     public void done(View view) {
     	Intent intent = new Intent(this, HealthMetrics.class);
         String message = "more data";
@@ -150,26 +139,11 @@ public class GraphActivity extends Activity {
        	startActivity(intent);
     }
     /** Called when the user clicks the close button on popup window*/
-    public void close(View view) {
+    public void popupClose(View view) {
     	popupWindow.dismiss();
     }
     
-    public XYMultipleSeriesDataset setDataset()
-	{
-    	XYMultipleSeriesDataset dataset =  new XYMultipleSeriesDataset();
-    	Series = new TimeSeries(title);	
-
-		int x = 1;
-		for(int yfromdb : yDB)
-		{
-			Series.add(x, yfromdb);
-			x++;
-		}	
-		xMax = x;
-		
-		dataset.addSeries(Series);
-		return dataset;
-	}
+    /*get db value to be displayed on graph*/
 	public int getDBValues() 
 	{
 		yDB.clear();
@@ -181,7 +155,6 @@ public class GraphActivity extends Activity {
     	System.out.println("Selected (" + count + ") items");
     	ResultSet cursor = selector.getResultSet();
 
-    	//cursor = null;
     	if(cursor.getCount() != 0)
     	{
     		cursor.moveToLast();

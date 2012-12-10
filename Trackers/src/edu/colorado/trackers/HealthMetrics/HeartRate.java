@@ -13,7 +13,6 @@ public class HeartRate extends Metric
 		db = new Database(context, "healthmetric15.db");
 		title = "HeartRate";
 		getLatestReading();
-		//return 0;
 		
 		//get the latest value stored in database
 		if(lastReading == 0)
@@ -69,7 +68,7 @@ public class HeartRate extends Metric
 		}
 		return 0;
 	}
-	public void getLatestReading() 
+	public void getLatestReading() //get the latest reading from db 
 	{
     	Selector selector = db.selector("healthMetrics15");       //give your table name here
     	selector.addColumns(new String[] { "id", "reading", "date"});

@@ -1,7 +1,6 @@
 package com.example.healthmetrics;
 
 import java.util.Calendar;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.content.ContentValues;
@@ -24,15 +23,16 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class DisplayMetric extends FragmentActivity implements View.OnClickListener {
-
+public class DisplayMetric extends FragmentActivity implements View.OnClickListener 
+{
 	public final static String EXTRA_MESSAGE = "com.example.DisplayMetric.MESSAGE";	
 	
 	private Database db;                                    //db instance
 	private String tableName = "healthMetrics15";           //db table for healthMetric
 	
 	String Titlemessage;     								//title displayed at the top of the page
-	String EmailMessage;
+	String EmailMessage = null;								//email content
+	PopupWindow popupWindow;
 	
     Calendar cal        =  Calendar.getInstance();          //get today's date
     int      setYear    =  cal.get(Calendar.YEAR);
@@ -43,18 +43,18 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
     {    
         public void handleMessage(Message m)
         {
-            Bundle b    =   m.getData();                       //extract the bundle  
-            setDay      =   b.getInt("pickedDay");             //extract the day 
-            setMonth    =   b.getInt("pickedMonth") + 1;           //extract the month
-            setYear     =   b.getInt("pickedYear");            //extract the year
+            Bundle b    =   m.getData();                       				   //extract the bundle  
+            setDay      =   b.getInt("pickedDay");                             //extract the day 
+            setMonth    =   b.getInt("pickedMonth") + 1;                       //extract the month
+            setYear     =   b.getInt("pickedYear");                            //extract the year
             Button bt   =   (Button) findViewById(R.id.datePicker);      
-            String txt  =   setMonth + "-"+ setDay + "-"+ setYear + " ";     //display the selected date
+            String txt  =   setMonth + "-"+ setDay + "-"+ setYear + " ";       //display the selected date
             bt.setText(txt);
             bt.setWidth(10);
             bt.setBackgroundResource(0);
             bt.setEnabled(false);
             bt = (Button) findViewById(R.id.addEntry);
-           	bt.setVisibility(View.VISIBLE);            
+           	bt.setVisibility(View.VISIBLE);            						//enable addEntry button
         }       
     };  
     
@@ -76,33 +76,28 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
     				"date TEXT NOT NULL " );
         }
 
-		getListItems();           // TODO DB     //retrieve the records
+		getListItems();            //retrieve the records
 		
 		Button bt   =   (Button) findViewById(R.id.datePicker);      
         bt.setEnabled(false);
 		
-		EditText e = (EditText) findViewById(R.id.ReadingInput);
+		EditText e = (EditText) findViewById(R.id.ReadingInput);    // add watcher for reading text input
 		e.addTextChangedListener(new LocalTextWatcher());
-		
-		
     }
 
+    /* get database values */
     public void getListItems() {
     	int counter = 0;
-    	
-
     	TableLayout table = (TableLayout) findViewById(R.id.TableLayout01); // empty the table contents if any,
     	table.removeAllViews();  
-
     	Selector selector = db.selector(tableName);
     	selector.addColumns(new String[] { "id", "reading", "date"});
     	selector.where("type = ?", new String[] {Titlemessage}); 
-    	//selector.orderBy("id");
     	int count = selector.execute();
     	System.out.println("Selected (" + count + ") items");
     	ResultSet cursor = selector.getResultSet();
     	
-    	if(cursor.getCount() > 0)
+    	if(cursor.getCount() > 0)									//display the db records in table
     	{
     		cursor.moveToLast();
     		EmailMessage = "     Reading              Date   \n";
@@ -112,7 +107,7 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
     		Integer reading  = cursor.getInt(1); 
     		String date      = cursor.getString(2);
     		
-    		EmailMessage +=   reading + "         " + date + "\n";
+    		EmailMessage +=   reading + "         " + date + "\n";     //add to the email content
     		
     		TableRow row     = new TableRow(this);
         	TextView t1 = new TextView(this);       // create a new TextView for reading     
@@ -137,31 +132,26 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
         	params1.leftMargin = 62;
         	row.addView(delBtn, 2, params1);
         	
-            table.addView(row,new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-            
+            table.addView(row,new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));            
             cursor.moveToPrevious();
     		}
     		cursor.close();
     	}
-    	
-        System.out.println("5");
     }
     
-    
+    /*called on click of delete button each reading*/
     public void onClick(View v) {   //TODO DB
     	TableLayout table = (TableLayout) findViewById(R.id.TableLayout01);
     	View row = (View) v.getParent();
     	TextView reading = (TextView) ((TableRow) row).getChildAt(0);
     	TextView date = (TextView) ((TableRow) row).getChildAt(1);
-
     	Deleter deleter = db.deleter(tableName);
     	deleter.where("reading = ? ", new String[] {reading.getText().toString()}); 
     	//deleter.where("date = ?", new String[] {date.getText().toString()});
     	deleter.execute();
     	System.out.println("Deleted: id = " + reading.toString());
-
-    	getListItems();
-        table.removeView(row);   
+    	getListItems();					//update the table 					
+        //table.removeView(row);   
     }
     
     /** Called when the user clicks the DeletAll button */
@@ -186,10 +176,24 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
     @SuppressLint("NewApi")
 	public void sendEmail(View view) {
     	String subject = Titlemessage;
-    	String content = "ansakdkajdlasjdi lkjd";
 		System.out.println("Got email: " + EmailMessage);
-		SendEmail s= new SendEmail(subject, content); 
-        s.show(getFragmentManager(), "Email healthMetric");
+		if(EmailMessage == null)		//if no data to send
+		{
+			LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);  
+		    View popupView = layoutInflater.inflate(R.layout.activity_popup, null);  
+		    popupWindow = new PopupWindow(popupView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		    popupWindow.showAtLocation(this.findViewById(R.id.TableLayout03), Gravity.CENTER, 0, 0);
+		}
+		else
+		{
+			SendEmail s= new SendEmail(subject, EmailMessage); 
+			s.show(getFragmentManager(), "Email healthMetric");
+		}
+    }
+    
+    /** Called when the user clicks the close button on popup window*/
+    public void popupClose(View view) {
+    	popupWindow.dismiss();				//close the popup
     }
     
     /** Called when the user clicks the add button */
@@ -214,22 +218,22 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
          bt = (Button) findViewById(R.id.addEntry);
          bt.setVisibility(View.GONE);
  		 
- 	  	Inserter inserter = db.inserter(tableName);
+ 	  	Inserter inserter = db.inserter(tableName);					//insert the new reading to database
 		inserter.columnNameValues(values);
 		inserter.execute();
 		getListItems(); 
     }
     
-    private boolean validateFields() 
+    private boolean validateFields() 			//validate the input fields.
     {
     	try 
 		{
     		EditText e = (EditText) findViewById(R.id.ReadingInput);
     		Integer ei = Integer.parseInt(e.getText().toString());
 	
-    		if (ei < 1) 
+    		if (ei < 1) 					   //if reading less than = 0.
     		{
-    			e.setError("invalid entry");
+    			e.setError("invalid entry");  //set error
     			return false;
     		}
     		else 
@@ -245,29 +249,22 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
     	return true;
 	}
     
-    private class LocalTextWatcher implements TextWatcher {
+    private class LocalTextWatcher implements TextWatcher {   //watcher for input text
 
 		public void afterTextChanged(Editable s) 
 		{
-			Button bt   =   (Button) findViewById(R.id.datePicker);   
+			Button bt   =   (Button) findViewById(R.id.datePicker);   //if the reading is valid, enable date button
 			if(validateFields())
 				bt.setEnabled(true);
 			else
 				bt.setEnabled(false);
 		}
-
 		public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-		public void onTextChanged(CharSequence s, int start, int before, int count) 
-		{
-			
-			
-		}
+		public void onTextChanged(CharSequence s, int start, int before, int count) {}
 	}
     
-    
     /** Called when the user clicks the done button */
-    public void back(View view)
+    public void back(View view)     
     {
     	Intent intent = new Intent(this, HealthMetrics.class);   //back to HealthMetric menu
        	String message = "more data";
@@ -279,15 +276,14 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
     public void  pickDate(View view) 
     {
         Bundle datePickerBundle = new Bundle();
-        datePickerBundle.putInt("pickedDay",   setDay);
+        datePickerBundle.putInt("pickedDay",   setDay);	
         datePickerBundle.putInt("pickedMonth", setMonth);
         datePickerBundle.putInt("pickedYear",  setYear);
-        DatePickerFragment datePicker = new DatePickerFragment(msgHandler);
+        DatePickerFragment datePicker = new DatePickerFragment(msgHandler);	  //call datePicker to display date picker popup
         datePicker.setArguments(datePickerBundle);
         FragmentManager     fmgr      = getSupportFragmentManager();
         FragmentTransaction ftrn      = fmgr.beginTransaction();
         ftrn.add(datePicker, "date_picker");
         ftrn.commit();    
     }
-
 }

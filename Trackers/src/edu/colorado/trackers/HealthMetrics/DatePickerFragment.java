@@ -16,7 +16,7 @@ public class DatePickerFragment extends DialogFragment{
  
     public DatePickerFragment(Handler msg)
     {
-        msgHandler = msg;
+        msgHandler = msg;	//get the value sent by caller
     }
  
     @Override
@@ -33,7 +33,7 @@ public class DatePickerFragment extends DialogFragment{
                 setDay    = pickedDay;
                 setMonth  = pickedMonth;
                 setYear   = pickedYear;
-                Bundle b  = new Bundle();
+                Bundle b  = new Bundle();		//set the return value
                 b.putInt("pickedDay",   setDay);
                 b.putInt("pickedMonth", setMonth);
                 b.putInt("pickedYear",  setYear);

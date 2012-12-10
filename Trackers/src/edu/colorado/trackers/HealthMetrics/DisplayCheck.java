@@ -21,7 +21,7 @@ public class DisplayCheck extends Activity {
         clear((View) findViewById(R.id.TableValue));
 
         EditText e = (EditText) findViewById(R.id.age);
-		e.addTextChangedListener(new LocalTextWatcher());
+		e.addTextChangedListener(new LocalTextWatcher());   //set watcher for age input
     }
 
     private boolean validateFields() 
@@ -31,7 +31,7 @@ public class DisplayCheck extends Activity {
     		EditText e = (EditText) findViewById(R.id.age);
     		Integer ei = Integer.parseInt(e.getText().toString());
 	
-    		if (ei < 1) 
+    		if (ei < 1) //if age invalid entry
     		{
     			e.setError("invalid entry");
     			return false;
@@ -56,7 +56,7 @@ public class DisplayCheck extends Activity {
 			if(validateFields())
 			{
 				set((View) findViewById(R.id.TableValue));
-				check((View) findViewById(R.id.TextView21));
+				check((View) findViewById(R.id.TextView21));	//check each metric
 				check((View) findViewById(R.id.TextView31));
 				check((View) findViewById(R.id.TextView41));
 				check((View) findViewById(R.id.TextView51));
@@ -112,16 +112,16 @@ public class DisplayCheck extends Activity {
     	if(ret == 0)
     	{
     		b.setVisibility(View.VISIBLE);
-            b.setBackgroundResource(R.drawable.red);
+            b.setBackgroundResource(R.drawable.red);		//not normal
     	}
     	else if(ret == 1)
     	{
     		b.setVisibility(View.VISIBLE);
-            b.setBackgroundResource(R.drawable.green);
+            b.setBackgroundResource(R.drawable.green);	   //normal
     	}
     	else if(ret == 2)
     	{
-    		view.setVisibility(View.GONE);
+    		view.setVisibility(View.GONE);				  //no reading stored for this metric
             b.setVisibility(View.GONE);
     	}
     }
@@ -129,7 +129,7 @@ public class DisplayCheck extends Activity {
     /** Called when the user clicks the done button */
     public void done(View view) 
     {
-        	Intent intent = new Intent(this, HealthMetrics.class);
+        	Intent intent = new Intent(this, HealthMetrics.class);		//go back to metric menu
         	startActivity(intent);
     }
 }

@@ -26,36 +26,25 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 public class LineGraph{
-
-	private Database db;
-	
-	List<Integer> yDB = new ArrayList<Integer>();
-	List<String> dateDB = new ArrayList<String>();
-	int yMin = 0, yMax = 0;
-	int xMax = 0;
-	
-	XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+	List<Integer> yDB     =   new ArrayList<Integer>();
+	List<String> dateDB   =   new ArrayList<String>();
+	int yMin = 0, yMax = 0, xMax = 0;
 	TimeSeries Series;
-	
-	String title;
-	
+	XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
 	XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer(); 
-	
-	public Intent getIntent(Context context, String database, String type, XYMultipleSeriesDataset dataset1) 
+
+	public Intent getIntent(Context context, String type, List<String> dateDB, int yMin, int yMax, int xMax, List<Integer> yDB ) 
 	{	
-		title = type;
-		Series = new TimeSeries(title);	
+		this.dateDB = dateDB;
+		this.yDB = yDB;
+		this.yMax = yMax;
+		this.yMin = yMin;
+		this.xMax = xMax;
 		
-		if(database.equals("healthMetric"))
-			db = new Database(context, "healthmetric15.db");
-		else if(database.equals("workout"))
-			db = new Database(context, "healthmetric15.db");
-		if(database.equals("shopping"))
-			db = new Database(context, "Shopping.db");
-		
-		setDataset();	
+		Series = new TimeSeries(type);	
+		setDataset();
 		setRender();
-		Intent intent = ChartFactory.getLineChartIntent(context, dataset1, mRenderer, title);
+		Intent intent = ChartFactory.getLineChartIntent(context, dataset, mRenderer, type);
 		return intent;	
 	}
 	
@@ -95,54 +84,15 @@ public class LineGraph{
         renderer.setFillPoints(true);
 	}
 	public void setDataset()
-	{
-		getDBValues();
+	{ 	 	
 		int x = 1;
-		//yDB.
 		for(int yfromdb : yDB)
 		{
 			Series.add(x, yfromdb);
 			x++;
 		}	
-		xMax = x;
+		xMax = x;		
 		dataset.addSeries(Series);
 		
 	}
-	public void getDBValues() 
-	{
-		yDB.clear();
-    	Selector selector = db.selector("healthMetrics15");       //give your table name here
-    	selector.addColumns(new String[] { "id", "reading", "date"});
-    	if(!title.equals(null))
-    		selector.where("type = ?", new String[] {title}); 
-    	//selector.orderBy("id");
-    	int count = selector.execute();
-    	System.out.println("Selected (" + count + ") items");
-    	ResultSet cursor = selector.getResultSet();
-
-    	//cursor = null;
-    	if(cursor.getCount() != 0)
-    	{
-    		cursor.moveToLast();
-    		while (!cursor.isBeforeFirst()) 
-    		{
-    			Integer reading = cursor.getInt(1); 
-    			String date = cursor.getString(2);
-    			if(yMin == 0)
-    				yMin = reading;
-    			if(reading < yMin)
-    				yMin = reading;
-    			if(reading > yMax)
-    				yMax = reading;
-    			yDB.add(reading);   
-    			dateDB.add(date);
-    			System.out.println("Data: "+ reading);
-    			cursor.moveToPrevious();
-    		}
-    	}
-    	cursor.close();
-    }
-	
-
-
 }
