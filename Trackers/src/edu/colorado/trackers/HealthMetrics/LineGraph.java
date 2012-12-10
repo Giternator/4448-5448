@@ -31,52 +31,52 @@ public class LineGraph{
 	int yMin = 0, yMax = 0, xMax = 0;
 	TimeSeries Series;
 	XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
-	XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer(); 
+	XYMultipleSeriesRenderer gRenderer = new XYMultipleSeriesRenderer(); 
 
 	public Intent getIntent(Context context, String type, List<String> dateDB, int yMin, int yMax, int xMax, List<Integer> yDB ) 
 	{	
-		this.dateDB = dateDB;
+		this.dateDB = dateDB;    //set the values set by the caller
 		this.yDB = yDB;
 		this.yMax = yMax;
 		this.yMin = yMin;
 		this.xMax = xMax;
 		
-		Series = new TimeSeries(type);	
-		setDataset();
-		setRender();
-		Intent intent = ChartFactory.getLineChartIntent(context, dataset, mRenderer, type);
+		Series = new TimeSeries(type);	//series for graph	
+		setDataset();					//set dataset series
+		setRender();					//set renderer
+		Intent intent = ChartFactory.getLineChartIntent(context, dataset, gRenderer, type);
 		return intent;	
 	}
 	
 	public void setRender()
 	{
-		XYSeriesRenderer renderer = new XYSeriesRenderer(); // This will be used to customize line 1
+		XYSeriesRenderer renderer = new XYSeriesRenderer(); 
 		for (int i = 0; i < dateDB.size(); i++) 
 	    { 
-		    mRenderer.addXTextLabel(i+1,dateDB.get(i));
+		    gRenderer.addXTextLabel(i+1,dateDB.get(i));
 	    }
-		mRenderer.setXLabelsAlign(Align.CENTER);
-		mRenderer.setYLabelsAlign(Align.RIGHT);
+		gRenderer.setXLabelsAlign(Align.CENTER);
+		gRenderer.setYLabelsAlign(Align.RIGHT);
 		
-		mRenderer.setLabelsColor(Color.WHITE);
-		mRenderer.setLabelsTextSize(15);
+		gRenderer.setLabelsColor(Color.WHITE);
+		gRenderer.setLabelsTextSize(15);
 		
-		mRenderer.setLegendTextSize(15);
+		gRenderer.setLegendTextSize(15);
 		
-		mRenderer.setXLabels(0);	
-		mRenderer.setShowCustomTextGrid(true);
-		mRenderer.addSeriesRenderer(renderer);	
+		gRenderer.setXLabels(0);	
+		gRenderer.setShowCustomTextGrid(true);
+		gRenderer.addSeriesRenderer(renderer);	
 		
-		mRenderer.setXAxisMax(5); // set the new values
-        mRenderer.setXAxisMin(0);
-        mRenderer.setYAxisMax(yMax + 1); // set the new values
-        mRenderer.setYAxisMin(yMin - 1);
+		gRenderer.setXAxisMax(5); // set the max, min for x & y 
+        gRenderer.setXAxisMin(0);
+        gRenderer.setYAxisMax(yMax + 1); 
+        gRenderer.setYAxisMin(yMin - 1);
       
-        mRenderer.setPanLimits(new double[] { 0, xMax, yMin - 1, yMax + 1 });        //limits the values displayed scroll
-        mRenderer.getSeriesRendererCount();
-        int length = mRenderer.getSeriesRendererCount();
+        gRenderer.setPanLimits(new double[] { 0, xMax, yMin - 1, yMax + 1 });        //limits the scroll values
+        gRenderer.getSeriesRendererCount();
+
         for (int i = 0; i < dateDB.size(); i++) {
-            SimpleSeriesRenderer seriesRenderer = mRenderer.getSeriesRendererAt(0);
+            SimpleSeriesRenderer seriesRenderer = gRenderer.getSeriesRendererAt(0);
             seriesRenderer.setDisplayChartValues(true);
         }
         renderer.setColor(Color.RED);

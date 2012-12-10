@@ -39,11 +39,13 @@ public class GraphActivity extends Activity {
     	title = "Cholesterol";
     	if(getDBValues() == 1)
 		{
+    		//display graph
 			Intent lineIntent = line.getIntent(this, title, dateDB, yMin, yMax, xMax,  yDB );
 			startActivity(lineIntent);
 		}
 		else
 		{
+			//no data popup
 			LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);  
 		    View popupView = layoutInflater.inflate(R.layout.activity_popup, null);  
 		    popupWindow = new PopupWindow(popupView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -59,11 +61,13 @@ public class GraphActivity extends Activity {
     	title = "BloodPressure";
 		if(getDBValues() == 1)
 		{
+    		//display graph
 			Intent lineIntent = line.getIntent(this, title, dateDB, yMin, yMax, xMax,  yDB );
 			startActivity(lineIntent);
 		}
 		else
 		{
+			//no data popup
 			LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);  
 		    View popupView = layoutInflater.inflate(R.layout.activity_popup, null);  
 		    popupWindow = new PopupWindow(popupView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -79,11 +83,13 @@ public class GraphActivity extends Activity {
     	title = "Sugar";
     	if(getDBValues() == 1)
 		{
+    		//display graph
     		Intent lineIntent = line.getIntent(this, title, dateDB, yMin, yMax, xMax,  yDB );
 			startActivity(lineIntent);
 		}
 		else
 		{
+			//no data popup
 			LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);  
 		    View popupView = layoutInflater.inflate(R.layout.activity_popup, null);  
 		    popupWindow = new PopupWindow(popupView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -98,11 +104,13 @@ public class GraphActivity extends Activity {
     	title = "Temperature";
     	if(getDBValues() == 1)
 		{
+    		//display graph
     		Intent lineIntent = line.getIntent(this, title, dateDB, yMin, yMax, xMax,  yDB );
 			startActivity(lineIntent);
 		}
 		else
 		{
+			//no data popup
 			LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);  
 		    View popupView = layoutInflater.inflate(R.layout.activity_popup, null);  
 		    popupWindow = new PopupWindow(popupView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -117,11 +125,13 @@ public class GraphActivity extends Activity {
     	title = "HeartRate";
     	if(getDBValues() == 1)
     	{
+    		//display graph
     		Intent lineIntent = line.getIntent(this, title, dateDB, yMin, yMax, xMax,  yDB );
 			startActivity(lineIntent);
 		}
 		else
 		{
+			//no data popup
 			Button b = (Button) findViewById(R.id.hrGraph);
 			b.setEnabled(false);
 			LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);  
@@ -130,8 +140,7 @@ public class GraphActivity extends Activity {
 		    popupWindow.showAtLocation(this.findViewById(R.id.hrGraph), Gravity.CENTER, 0, 0); 
 		}
     }
-    /** Called when the user clicks the done button */
-    
+    /** Called when the user clicks the done button */   
     public void done(View view) {
     	Intent intent = new Intent(this, HealthMetrics.class);
         String message = "more data";
@@ -147,6 +156,8 @@ public class GraphActivity extends Activity {
 	public int getDBValues() 
 	{
 		yDB.clear();
+    	yMin = 0; yMax = 0; xMax = 0;
+    	dateDB.clear();
     	Selector selector = db.selector("healthMetrics15");       //give your table name here
     	selector.addColumns(new String[] { "id", "reading", "date"});
     	if(!title.equals(null))
@@ -162,13 +173,13 @@ public class GraphActivity extends Activity {
     		{
     			Integer reading = cursor.getInt(1); 
     			String date = cursor.getString(2);
-    			if(yMin == 0)
+    			if(yMin == 0)							//set the ymin, ymax values to be displayed on graph
     				yMin = reading;
     			if(reading < yMin)
     				yMin = reading;
     			if(reading > yMax)
     				yMax = reading;
-    			yDB.add(reading);   
+    			yDB.add(reading);					//add reading and date value to the dataset   
     			dateDB.add(date);
     			System.out.println("GraphActivity:   Data: "+ reading);
     			cursor.moveToPrevious();
