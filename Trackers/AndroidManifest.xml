@@ -47,14 +47,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.colorado.trackers.workout.MainActivity" />
-        </activity>     
-        <activity
-            android:name="edu.colorado.trackers.workout.SendEmail"
-            android:label="@string/title_activity_sendemail" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.colorado.trackers.workout.MainActivity" />
-        </activity>               
+        </activity>      
     </application>
 
 </manifest>
