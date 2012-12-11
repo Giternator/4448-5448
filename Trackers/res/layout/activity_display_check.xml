@@ -9,7 +9,7 @@
       <TextView android:id="@+id/TextView11" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/agePrompt"
           		android:gravity = "center" android:layout_span="1"></TextView> 
       <EditText android:id="@+id/age" android:layout_width="3dp" android:layout_height="wrap_content"
-          	    android:maxLength = "3" android:numeric="integer" android:layout_span="5" android:layout_marginLeft="125dip"></EditText>
+          	    android:maxLength = "2" android:numeric="integer" android:layout_span="5" android:layout_marginLeft="125dip"></EditText>
     </TableRow>    
         
      </TableLayout>
