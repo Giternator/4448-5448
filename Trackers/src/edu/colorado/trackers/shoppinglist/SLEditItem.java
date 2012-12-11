@@ -1,5 +1,7 @@
 package edu.colorado.trackers.shoppinglist;
 
+import java.util.Date;
+
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -171,6 +173,14 @@ public class SLEditItem extends Activity {
 				inserter.execute();
 				System.out.println(String.format("Inserted: (%d) %s %.2f", quantity, name, price));
 			}
+			
+			// Insert into records table for graph data
+			values.remove("quantity");
+			values.put("time", new Date().toString());
+			Inserter inserter = db.inserter("sl_record");
+			inserter.columnNameValues(values);
+			inserter.execute();
+			System.out.println(String.format("Inserted: %s %.2f into records", name, price));
 		}
 	}
 	

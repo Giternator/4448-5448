@@ -13,6 +13,7 @@
     <string name="menu_delete">Delete</string>
     <string name="menu_cancel">Cancel</string>
     <string name="menu_ok">OK</string>
+    <string name="menu_view_price_graph">View Price Graph</string>
     <string name="title_activity_sledit_item">Edit Item</string>
     <string name="sl_name_label">Name:</string>
     <string name="sl_name_hint">The name of the item</string>

@@ -1,5 +1,8 @@
 package edu.colorado.trackers.shoppinglist;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -24,6 +27,7 @@ import edu.colorado.trackers.db.Deleter;
 import edu.colorado.trackers.db.ResultSet;
 import edu.colorado.trackers.db.Selector;
 import edu.colorado.trackers.db.Updater;
+import edu.colorado.trackers.graph.LineGraph;
 
 public class SLMainActivity extends Activity {
 	
@@ -42,6 +46,10 @@ public class SLMainActivity extends Activity {
         db = new Database(this, "shopping_list.db");
         if (!db.tableExists(tableName)) {
         	createDBTable();
+        }
+        
+        if (!db.tableExists("sl_record")) {
+        	createDBRecordTable();
         }
         
         totalCostTextView = (TextView) findViewById(R.id.shopping_list_total);
@@ -100,6 +108,41 @@ public class SLMainActivity extends Activity {
     		startActivity(intent);
     	} else if (item.getItemId() == R.id.context_menu_cancel) {
     		return super.onContextItemSelected(item);
+    	} else if (item.getItemId() == R.id.context_menu_view_price_graph) {
+    		// TODO view price graph
+    		Selector selector = db.selector("sl_record");
+    		selector.addColumns(new String[] { "price", "time" });
+    		selector.where("name = ?", new String[] { slItem.getName() });
+    		selector.orderBy("time");
+    		selector.execute();
+    		ResultSet cursor = selector.getResultSet();
+    		
+    		List<String> dateList = new ArrayList<String>();
+    		List<Integer> priceList = new ArrayList<Integer>();
+    		Integer maxX = 25;
+    		Integer minY = 1;
+    		Integer maxY = 0;
+    		
+    		while (cursor.moveToNext()) {
+    			Double price = cursor.getDouble(0);
+    			String date = cursor.getString(1);
+    			
+    			if (minY == 0) {
+    				minY = price.intValue();
+    			}
+    			if (price < minY) {
+    				minY = price.intValue();
+    			}
+    			if (price > maxY) {
+    				maxY = price.intValue();
+    			}
+    			
+    			priceList.add(price.intValue());
+    			dateList.add(date);
+    		}
+    		
+    		Intent lineGraphIntent = new LineGraph().getIntent(this, "Price Graph", dateList, 0, maxY, maxX, priceList);
+    		startActivity(lineGraphIntent);
     	}
     	return true;
     }
@@ -159,6 +202,12 @@ public class SLMainActivity extends Activity {
     			"price REAL NOT NULL, " +
     			"quantity INTEGER NOT NULL, " +
     			"is_crossed INTEGER NOT NULL DEFAULT 0");
+    }
+    
+    private void createDBRecordTable() {
+    	db.createTable("sl_record", "name TEXT NOT NULL, " +
+    			"price REAL NOT NULL, " +
+    			"time TEXT NOT NULL ");
     }
     
     private void toggleStikeThrough(TextView textView) {
