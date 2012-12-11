@@ -1,4 +1,4 @@
-package com.example.healthmetrics;
+package edu.colorado.trackers.healthmetrics
 
 import android.app.Activity;
 import android.content.Intent;

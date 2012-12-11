@@ -1,4 +1,4 @@
-package com.example.healthmetrics;
+package edu.colorado.trackers.healthmetrics
 
 import java.util.ArrayList;
 import java.util.List;
