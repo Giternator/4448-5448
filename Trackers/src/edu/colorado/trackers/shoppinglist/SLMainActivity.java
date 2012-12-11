@@ -74,12 +74,14 @@ public class SLMainActivity extends Activity {
             case R.id.sl_menu_new_item:
             	Intent intent = new Intent(this, SLEditItem.class);
             	startActivity(intent);
+            	return true;
             	
             case R.id.sl_menu_email:
             	ShoppingListArrayAdapter items = (ShoppingListArrayAdapter) listItems.getAdapter();
             	String content = items.getListAsString();
             	SendEmail s = new SendEmail("Shopping List", content);
             	s.show(getFragmentManager(), "Email Shopping List");
+            	return false;
         }
         return super.onOptionsItemSelected(item);
     }
