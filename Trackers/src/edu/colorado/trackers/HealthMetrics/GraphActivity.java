@@ -166,7 +166,7 @@ public class GraphActivity extends Activity {
     	yMin = 0; yMax = 0; xMax = 0;
     	dateDB.clear();
     	Selector selector = db.selector("healthMetrics15");       //give your table name here
-    	selector.addColumns(new String[] { "id", "reading", "date"});
+    	selector.addColumns(new String[] { "reading", "date"});
     	if(!title.equals(null))
     		selector.where("type = ?", new String[] {title}); 
     	int count = selector.execute();
@@ -178,8 +178,8 @@ public class GraphActivity extends Activity {
     		cursor.moveToLast();
     		while (!cursor.isBeforeFirst()) 
     		{
-    			Integer reading = cursor.getInt(1); 
-    			String date = cursor.getString(2);
+    			Integer reading = cursor.getInt(0); 
+    			String date = cursor.getString(1);
     			if(yMin == 0)							//set the ymin, ymax values to be displayed on graph
     				yMin = reading;
     			if(reading < yMin)
