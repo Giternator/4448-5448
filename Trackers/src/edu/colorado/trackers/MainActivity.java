@@ -10,6 +10,7 @@ import android.widget.Button;
 public class MainActivity extends Activity {
 	
 	private Button shoppingListButton;
+	private Button healthMetricsButton;
 	private Button workoutButton;
 
     @Override
@@ -22,6 +23,16 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				System.out.println("Button pressed: shopping list");
 				Intent intent = new Intent(MainActivity.this, edu.colorado.trackers.shoppinglist.SLMainActivity.class);
+				startActivity(intent);
+			}
+		});
+        
+        healthMetricsButton = (Button) findViewById(R.id.health_metrics_button);
+        healthMetricsButton.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				System.out.println("Button pressed: health metrics");
+				Intent intent = new Intent(MainActivity.this, edu.colorado.trackers.HealthMetrics.HealthMetrics.class);
 				startActivity(intent);
 			}
 		});

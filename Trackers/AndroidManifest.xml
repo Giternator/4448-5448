@@ -49,38 +49,35 @@
                 android:value="edu.colorado.trackers.workout.MainActivity" />
         </activity>  
 
-
 		<activity
-            android:name=".HealthMetrics"
+            android:name="edu.colorado.trackers.HealthMetrics.HealthMetrics"
             android:label="@string/title_activity_health_metrics" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.colorado.trackers.HealthMetrics.HealthMetrics" />
         </activity>
         <activity
-            android:name=".DisplayMetric"
+            android:name="edu.colorado.trackers.HealthMetrics.DisplayMetric"
             android:label="@string/title_activity_display_metric"
             android:windowSoftInputMode="stateHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.healthmetrics.HealthMetrics" />
+                android:value="edu.colorado.trackers.HealthMetrics.HealthMetrics" />
         </activity>
         <activity
-            android:name=".DisplayCheck"
+            android:name="edu.colorado.trackers.HealthMetrics.DisplayCheck"
             android:label="@string/title_activity_display_check" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.healthmetrics.HealthMetrics" />
+                android:value="edu.colorado.trackers.HealthMetrics.HealthMetrics" />
         </activity>
         
         <activity
-            android:name=".GraphActivity"
+            android:name="edu.colorado.trackers.HealthMetrics.GraphActivity"
             android:label="@string/title_activity_graph" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.healthmetrics.HealthMetrics" />
+                android:value="edu.colorado.trackers.HealthMetrics.HealthMetrics" />
         	</activity>
         
         <activity android:name="org.achartengine.GraphicalActivity" /> 

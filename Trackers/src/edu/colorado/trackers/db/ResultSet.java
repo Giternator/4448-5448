@@ -44,4 +44,16 @@ public class ResultSet {
 	public boolean moveToNext() {
 		return cursor.moveToNext();
 	}
+
+	public boolean moveToLast() {
+		return cursor.moveToLast();
+	}
+
+	public boolean isBeforeFirst() {
+		return cursor.isBeforeFirst();
+	}
+
+	public boolean moveToPrevious() {
+		return cursor.moveToPrevious();
+	}
 }

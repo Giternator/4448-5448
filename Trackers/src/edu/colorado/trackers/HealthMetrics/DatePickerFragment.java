@@ -28,7 +28,6 @@ public class DatePickerFragment extends DialogFragment{
         setYear   = b.getInt("pickedYear");
         DatePickerDialog.OnDateSetListener listener  = new DatePickerDialog.OnDateSetListener() 
         {
-            @Override
             public void onDateSet(DatePicker view, int pickedYear, int pickedMonth, int pickedDay) {
                 setDay    = pickedDay;
                 setMonth  = pickedMonth;
