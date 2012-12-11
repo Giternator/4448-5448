@@ -21,7 +21,7 @@ public class ResultSet {
 		cursor.close();
 	}
 
-	int getCount() {
+	public int getCount() {
 		return cursor.getCount();
 	}
 	
