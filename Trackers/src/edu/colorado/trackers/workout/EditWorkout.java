@@ -5,9 +5,11 @@ import edu.colorado.trackers.db.*;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.DialogFragment;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +30,7 @@ public class EditWorkout extends Activity implements OnDateSetListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.w_activity_edit_item);
 		exercise = getIntent().getStringExtra("exercise");
-		db = new Database(this, "profiles.db");
+		db = new Database(this, "trackers.db");
 		
         final Button button = (Button) findViewById(R.id.button1);
         button.setOnClickListener(new View.OnClickListener() {
@@ -46,36 +48,81 @@ public class EditWorkout extends Activity implements OnDateSetListener {
 	public boolean onOptionsItemSelected (MenuItem item) {
 		if (item.getItemId() == R.id.menu_ok) {
 			saveData = true;
+			EditText exercise_e = (EditText) findViewById(R.id.exercise);		
+			String exer = exercise_e.getText().toString();	
+			finish();
+			return true;
+				
 		} else if (item.getItemId() == R.id.menu_cancel) {
 			saveData = false;
+			finish();
+			return true;
 		}
-		finish();
 		return true;
 	}
+	
+	private void showAlert() {
+		
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				this);
+ 
+			// set title
+			alertDialogBuilder.setTitle("Your Title");
+ 
+			// set dialog message
+			alertDialogBuilder
+				.setMessage("Click yes to exit!")
+				.setCancelable(false)
+				.setNeutralButton("Yes",new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,int id) {
+						// if this button is clicked, close
+						// current activity
+						finish();
+					}
+				  })
+				.setNegativeButton("No",new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,int id) {
+						// if this button is clicked, just close
+						// the dialog box and do nothing
+						dialog.cancel();
+					}
+				});
+ 
+				// create alert dialog
+				AlertDialog alertDialog = alertDialogBuilder.create();
+ 
+				// show it
+				alertDialog.show();
+	}
+	
 
 	public void onResume() {
 		super.onResume();
-		saveData = true;
-
+		
 		if (exercise != null) {
-
+			saveData = true;
 			EditText exer = (EditText) findViewById(R.id.exercise);
+			EditText weight = (EditText) findViewById(R.id.weight);			
 			EditText reps  = (EditText) findViewById(R.id.reps);
 			EditText sets      = (EditText) findViewById(R.id.sets);
 			EditText dt      = (EditText) findViewById(R.id.date);
 			
 			Selector sel = db.selector(tableName);
-			sel.addColumns(new String[] { "exercise", "reps", "sets", "date" });
+			sel.addColumns(new String[] { "exercise", "weight", "reps", "sets", "date" });
 			sel.where("exercise == ?", new String[] {exercise});
 			sel.execute();
 			ResultSet cursor = sel.getResultSet();
 			while (cursor.moveToNext()) {
 				exer.setText(cursor.getString(0));
-				reps.setText(cursor.getString(1));
-				sets.setText(cursor.getString(2));
-				dt.setText(cursor.getString(3));				
+				weight.setText(cursor.getString(1));
+				reps.setText(cursor.getString(2));
+				sets.setText(cursor.getString(3));
+				dt.setText(cursor.getString(4));				
 			}
 			cursor.close();
+		}
+		else {
+			saveData = false;
 		}
 
 	}
@@ -85,11 +132,13 @@ public class EditWorkout extends Activity implements OnDateSetListener {
 		if (saveData) {
 
 			EditText exercise_e = (EditText) findViewById(R.id.exercise);
+			EditText weight_e = (EditText) findViewById(R.id.weight);			
 			EditText reps_e  = (EditText) findViewById(R.id.reps);
 			EditText sets_e = (EditText) findViewById(R.id.sets);
 			EditText date_e = (EditText) findViewById(R.id.date);			
 
 			String exer = exercise_e.getText().toString();	
+			String weight = weight_e.getText().toString();				
 			String reps = reps_e.getText().toString();
 			String sets = sets_e.getText().toString();
 			String date = date_e.getText().toString();
@@ -102,13 +151,15 @@ public class EditWorkout extends Activity implements OnDateSetListener {
 
 			ContentValues values = new ContentValues();
 			values.put("exercise", exer);
+			values.put("weight", weight);			
 			values.put("reps", reps);
 			values.put("sets", sets);
 			values.put("date", date);
-			Inserter ins = db.inserter(tableName);
-			ins.columnNameValues(values);
-			ins.execute();
-
+			if (exer != null) {
+				Inserter ins = db.inserter(tableName);
+				ins.columnNameValues(values);
+				ins.execute();
+			}
 		}
 	}
 

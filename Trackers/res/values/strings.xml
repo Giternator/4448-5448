@@ -30,11 +30,13 @@
     <!--Workout-->
     <string name="menu_new_profile">New</string>
     <string name="menu_delete_profile">Delete</string>
-    <string name="menu_activity_workout_info">Edit</string>
     <string name="menu_send_mail">Email Workouts</string>
+    <string name="menu_graph">Graph progress</string>    
     <string name="label_exercise">Exercise</string>
     <string name="label_reps">Repitions</string>
+    <string name="label_weight">Weight/Time</string>    
     <string name="hint_exercise">Enter Exercise Name</string>
+    <string name="hint_weight">Enter Weight OR time</string>   
     <string name="hint_reps">Enter repititons</string>
     <string name="label_sets">Sets</string>
     <string name="hint_sets">Enter Sets</string>
@@ -45,7 +47,7 @@
     <string name="delete">Delete</string>    
     <string name="cancel">Cancel</string>            
     <string name="chose_date">Chose Date</string>        
-	
+    
      <!--Email-->
     <string name="email_message">Send Email To:</string>
     <string name="ok_email">OK</string>
@@ -72,5 +74,4 @@
     <string name="agePrompt">Enter your age</string>
     <string name="title_activity_display_check">Check Metrics</string>
     <string name="title_activity_graph">GraphActivity</string>
-	    
 </resources>
