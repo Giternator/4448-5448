@@ -1,5 +1,6 @@
-package edu.colorado.trackers.healthmetrics
+package edu.colorado.trackers.HealthMetrics;
 
+import edu.colorado.trackers.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

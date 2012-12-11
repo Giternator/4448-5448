@@ -1,4 +1,4 @@
-package edu.colorado.trackers.healthmetrics
+package edu.colorado.trackers.HealthMetrics;
 
 import android.content.Context;
 

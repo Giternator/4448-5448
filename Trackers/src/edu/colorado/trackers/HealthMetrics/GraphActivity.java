@@ -1,10 +1,15 @@
-package edu.colorado.trackers.healthmetrics
+package edu.colorado.trackers.HealthMetrics;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.achartengine.model.TimeSeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
+
+import edu.colorado.trackers.R;
+import edu.colorado.trackers.db.Database;
+import edu.colorado.trackers.db.ResultSet;
+import edu.colorado.trackers.db.Selector;
 
 import android.app.Activity;
 import android.content.Intent;

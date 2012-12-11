@@ -1,6 +1,14 @@
-package com.example.healthmetrics;
+package edu.colorado.trackers.HealthMetrics;
 
 import java.util.Calendar;
+
+import edu.colorado.trackers.R;
+import edu.colorado.trackers.SendEmail;
+import edu.colorado.trackers.db.Database;
+import edu.colorado.trackers.db.Deleter;
+import edu.colorado.trackers.db.Inserter;
+import edu.colorado.trackers.db.ResultSet;
+import edu.colorado.trackers.db.Selector;
 import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.content.ContentValues;

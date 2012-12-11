@@ -1,4 +1,4 @@
-package com.example.healthmetrics;
+package edu.colorado.trackers.HealthMetrics;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
