@@ -10,7 +10,7 @@ import edu.colorado.trackers.R;
 import edu.colorado.trackers.db.Database;
 import edu.colorado.trackers.db.ResultSet;
 import edu.colorado.trackers.db.Selector;
-import edu.colorado.trackers.graph.LineGraph;
+
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupWindow;
 
+import edu.colorado.trackers.graph.LineGraph;
 
 public class GraphActivity extends Activity {
 	
