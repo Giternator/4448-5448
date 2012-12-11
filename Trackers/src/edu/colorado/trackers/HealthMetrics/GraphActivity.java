@@ -11,7 +11,6 @@ import edu.colorado.trackers.db.Database;
 import edu.colorado.trackers.db.ResultSet;
 import edu.colorado.trackers.db.Selector;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
