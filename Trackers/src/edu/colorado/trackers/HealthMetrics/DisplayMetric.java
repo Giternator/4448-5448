@@ -43,9 +43,9 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
 	PopupWindow popupWindow;
 	
     Calendar cal        =  Calendar.getInstance();          //get today's date
-    int      setYear    =  cal.get(Calendar.YEAR);
-    int      setMonth   =  cal.get(Calendar.MONTH);
-    int      setDay     =  cal.get(Calendar.DAY_OF_MONTH);  
+    int      setYear;
+    int      setMonth;  
+    int      setDay; 
     
     Handler msgHandler = new Handler()   //message parsing - sent by DatePickerFragment
     {    
@@ -285,6 +285,10 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
     /* Called when the user clicks on calendar button */
     public void  pickDate(View view) 
     {
+    	cal        =  Calendar.getInstance();          //get today's date
+    	setYear    =  cal.get(Calendar.YEAR);
+    	setMonth   =  cal.get(Calendar.MONTH);
+    	setDay     =  cal.get(Calendar.DAY_OF_MONTH);  
         Bundle datePickerBundle = new Bundle();
         datePickerBundle.putInt("pickedDay",   setDay);	
         datePickerBundle.putInt("pickedMonth", setMonth);
