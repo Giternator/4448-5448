@@ -22,6 +22,7 @@ import android.widget.EditText;
 public class EditWorkout extends Activity implements OnDateSetListener {
 
 	private String exercise;
+	private String date;
 	private boolean saveData = true;
 	private Database db;
 	private String tableName = "workout";
@@ -30,6 +31,7 @@ public class EditWorkout extends Activity implements OnDateSetListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.w_activity_edit_item);
 		exercise = getIntent().getStringExtra("exercise");
+		date = getIntent().getStringExtra("date");
 		db = new Database(this, "trackers.db");
 		
         final Button button = (Button) findViewById(R.id.button1);
@@ -63,11 +65,10 @@ public class EditWorkout extends Activity implements OnDateSetListener {
 	
 	private void showAlert() {
 		
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-				this);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
  
 			// set title
-			alertDialogBuilder.setTitle("Your Title");
+			alertDialogBuilder.setTitle("Error");
  
 			// set dialog message
 			alertDialogBuilder
@@ -108,8 +109,8 @@ public class EditWorkout extends Activity implements OnDateSetListener {
 			EditText dt      = (EditText) findViewById(R.id.date);
 			
 			Selector sel = db.selector(tableName);
-			sel.addColumns(new String[] { "exercise", "weight", "reps", "sets", "date" });
-			sel.where("exercise == ?", new String[] {exercise});
+			sel.addColumns(new String[] { "exercise", "weight", "reps", "sets", "dt" });
+			sel.where("exercise == ? and dt = ?", new String[] {exercise, date});
 			sel.execute();
 			ResultSet cursor = sel.getResultSet();
 			while (cursor.moveToNext()) {
@@ -141,25 +142,31 @@ public class EditWorkout extends Activity implements OnDateSetListener {
 			String weight = weight_e.getText().toString();				
 			String reps = reps_e.getText().toString();
 			String sets = sets_e.getText().toString();
-			String date = date_e.getText().toString();
+			String dt = date_e.getText().toString();
 
 			if (exer != null) {
-				Deleter del = db.deleter(tableName);
-				del.where("exercise = ?", new String[] { exercise });
-				del.execute();
+				ContentValues values = new ContentValues();
+				values.put("exercise", exer);
+				values.put("weight", weight);			
+				values.put("reps", reps);
+				values.put("sets", sets);
+				values.put("dt", dt);
+				
+				Selector sel = db.selector(tableName);
+				sel.where("exercise = ? and dt = ?",  new String[] { exer, dt });
+				int count = sel.execute();
+				if (count != 0) {
+					Updater upd = db.updater(tableName);
+					upd.columnNameValues(values);
+					upd.where("exercise = ? and dt = ?", new String[] {exer, dt});
+					upd.execute();
+				}
+				else {
+					insert(values);
+				}
+					
 			}
 
-			ContentValues values = new ContentValues();
-			values.put("exercise", exer);
-			values.put("weight", weight);			
-			values.put("reps", reps);
-			values.put("sets", sets);
-			values.put("date", date);
-			if (exer != null) {
-				Inserter ins = db.inserter(tableName);
-				ins.columnNameValues(values);
-				ins.execute();
-			}
 		}
 	}
 
