@@ -180,7 +180,7 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
         startActivity(intent);
     }
     
-    /** Called when the user clicks the Check button */
+    /** Called when the user clicks the mail button */
     @SuppressLint("NewApi")
 	public void sendEmail(View view) {
     	String subject = Titlemessage;

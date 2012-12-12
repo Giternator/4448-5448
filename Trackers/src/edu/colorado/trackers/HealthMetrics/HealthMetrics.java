@@ -32,7 +32,7 @@ public class HealthMetrics extends Activity
     	Intent intent = new Intent(this, MainActivity.class);
     	String message = "HealthMetrics";
     	intent.putExtra(EXTRA_MESSAGE, message);
-    	startActivity(intent);                            //start the check metric activity
+    	startActivity(intent);                            //start the  metric activity
     }
     /** Called when the user clicks the Check button */
     public void callCheck(View view) {

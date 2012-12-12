@@ -57,9 +57,9 @@
 	<!--<string name="app_name">HealthMetrics</string>-->
     <string name="title_activity_health_metrics">HealthMetrics</string>
     <string name="Cholesterol">Cholesterol</string>
-    <string name="BloodPressure">Blood Pressure</string>
+    <string name="BloodPressure">BloodPressure</string>
     <string name="Sugar">Sugar</string>
-    <string name="HeartRate">Heart Rate</string>
+    <string name="HeartRate">HeartRate</string>
     <string name="Temperature">Temperature</string>
     <string name="Home">Home</string>
     <string name="Graph">Graph</string>

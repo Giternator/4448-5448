@@ -79,7 +79,7 @@ public class DisplayCheck extends Activity {
     
     public void check(View view) {
     	int iage = 0;
-    	
+    	MetricFactory mfact = new MetricFactory();
     	TextView tage = (TextView) findViewById(R.id.age);
     	iage = Integer.parseInt(tage.getText().toString());
     	
@@ -88,23 +88,23 @@ public class DisplayCheck extends Activity {
     	switch(view.getId())
     	{
     		case R.id.TextView21:
-    				m = new Cholesterol();
+    				m = mfact.createMetric("Cholesterol");
     				b = (Button) findViewById(R.id.TextView22);
     				break;
             case R.id.TextView31:
-            		m = new bloodPressure();
+            		m = mfact.createMetric("bloodPressure");
             		b = (Button) findViewById(R.id.TextView32);
             		break;
             case R.id.TextView41:
-					m = new Sugar();
+            		m = mfact.createMetric("Sugar");
 					b = (Button) findViewById(R.id.TextView42);
 					break;
             case R.id.TextView51:
-        			m = new Temperature();
+            		m = mfact.createMetric("Temperature");
         			b = (Button) findViewById(R.id.TextView52);
         			break;
             case R.id.TextView61:
-            		m = new HeartRate();
+            		m = mfact.createMetric("HeartRate");
             		b = (Button) findViewById(R.id.TextView62);
             		break;
     	}

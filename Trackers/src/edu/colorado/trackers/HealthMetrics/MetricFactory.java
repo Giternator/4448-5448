@@ -2,7 +2,7 @@ package edu.colorado.trackers.HealthMetrics;
 
 public class MetricFactory 
 {
-	public static Metric createMetric (String metric) 
+	public Metric createMetric (String metric) 
 	{
 	       if (metric. equalsIgnoreCase ("Cholesterol"))
 	       {
@@ -14,15 +14,15 @@ public class MetricFactory
 	       }
 	       else if(metric. equalsIgnoreCase ("Sugar"))
 	       {
-	              return new bloodPressure();
+	              return new Sugar();
 	       }
 	       else if(metric. equalsIgnoreCase ("Temperature"))
 	       {
-	              return new bloodPressure();
+	              return new Temperature();
 	       }
 	       else if(metric. equalsIgnoreCase ("HeartRate"))
 	       {
-	              return new bloodPressure();
+	              return new HeartRate();
 	       }
 	       throw new IllegalArgumentException("No such metric");
 	}
