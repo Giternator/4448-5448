@@ -115,6 +115,8 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
     		Integer reading  = cursor.getInt(1); 
     		String date      = cursor.getString(2);
     		
+    		System.out.println("Record:  reading=" + reading + " date =:" + date+":");
+    		
     		EmailMessage +=   reading + "         " + date + "\n";     //add to the email content
     		
     		TableRow row     = new TableRow(this);
@@ -154,12 +156,12 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
     	TextView reading = (TextView) ((TableRow) row).getChildAt(0);
     	TextView date = (TextView) ((TableRow) row).getChildAt(1);
     	Deleter deleter = db.deleter(tableName);
-    	deleter.where("reading = ? ", new String[] {reading.getText().toString()}); 
-    	//deleter.where("date = ?", new String[] {date.getText().toString()});
+    	String dt = date.getText().toString().trim();	
+    	deleter.where("type = ?  and reading = ? and date = ?", new String[] {Titlemessage, reading.getText().toString().trim(), dt}); 
     	deleter.execute();
-    	System.out.println("Deleted: id = " + reading.toString());
-    	getListItems();					//update the table 					
-        //table.removeView(row);   
+    	System.out.println("Deleted: reading = " + reading.getText().toString() +":date="+dt+":");
+    	table.removeView(row); 
+    	getListItems();					//update the table 					      
     }
     
     /** Called when the user clicks the DeletAll button */
@@ -218,7 +220,7 @@ public class DisplayMetric extends FragmentActivity implements View.OnClickListe
          values.put("reading", value1);
 
          Button bt = (Button) findViewById(R.id.datePicker);
-         value1 = bt.getText().toString();   
+         value1 = bt.getText().toString().trim();   
          bt.setText(null);
  		 bt.setBackgroundResource(R.drawable.cal);
          values.put("date", value1);
