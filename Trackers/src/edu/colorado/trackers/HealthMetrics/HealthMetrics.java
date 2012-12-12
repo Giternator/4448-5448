@@ -1,5 +1,6 @@
 package edu.colorado.trackers.HealthMetrics;
 
+import edu.colorado.trackers.MainActivity;
 import edu.colorado.trackers.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -17,7 +18,7 @@ public class HealthMetrics extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_health_metrics);  //healthMetrics Main menu
     }
-    /** Called when the user clicks the button */
+    /** Called when the user clicks any metric button */
     public void selectMetric(View view) {
     	Intent intent = new Intent(this, DisplayMetric.class);
     	Button b = (Button)view;
@@ -26,7 +27,13 @@ public class HealthMetrics extends Activity
     	startActivity(intent);                            //start the Display metric activity
     }
    
-    
+    /** Called when the user clicks the Check button */
+    public void goMainMenu(View view) {
+    	Intent intent = new Intent(this, MainActivity.class);
+    	String message = "HealthMetrics";
+    	intent.putExtra(EXTRA_MESSAGE, message);
+    	startActivity(intent);                            //start the check metric activity
+    }
     /** Called when the user clicks the Check button */
     public void callCheck(View view) {
     	Intent intent = new Intent(this, DisplayCheck.class);

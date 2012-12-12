@@ -12,7 +12,7 @@
         android:layout_marginBottom="17dp"
         android:layout_marginLeft="16dp"
         android:background="@drawable/back"
-		android:onClick="selectMetric" />
+		android:onClick="goMainMenu" />
 
     <Button
         android:id="@+id/Button07"
