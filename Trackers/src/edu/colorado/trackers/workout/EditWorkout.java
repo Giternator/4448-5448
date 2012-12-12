@@ -201,7 +201,8 @@ public class EditWorkout extends Activity implements OnDateSetListener {
 	public void onDateSet(android.widget.DatePicker view, int year,
 			int monthOfYear, int dayOfMonth) {
 		EditText dt      = (EditText) findViewById(R.id.date);
-		String date = monthOfYear + "/" + dayOfMonth + "/" + year;
+		// increment month as it starts from 0
+		String date = (monthOfYear + 1) + "/" + dayOfMonth  + "/" + year;
 		dt.setText(date);
 	}	
 
